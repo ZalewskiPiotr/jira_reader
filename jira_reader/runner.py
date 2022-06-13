@@ -23,9 +23,13 @@ def test_func(number):
 
 def main():
     print(f"hello. My name is {__name__} and version is {jr.__version__}")
-    print('Please wait... I\'m connecting to Jira...')
 
-    content = jira.get_page_content('https://jira.apator.com/browse/AIBO-183', 'piotr.zalewski@rector.apator.com', '')
+    task_url = input('Podaj adres taska: ')
+    username = input('Podaj nazwę użytkownika: ')
+    password = input('Podaj hasło: ')
+
+    print('Please wait... I\'m connecting to Jira...')
+    content = jira.get_page_content(task_url, username, password)
 
     print('Please wait... I\'m gathering information about task...')
     estimated, remaining, logged = jira.get_information_about_task(content)

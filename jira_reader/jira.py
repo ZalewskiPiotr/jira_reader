@@ -2,6 +2,7 @@ import requests  # trzecia
 from bs4 import BeautifulSoup  # trzecia
 
 
+# TODO: dodać Unittest - w czasie estimated zamiast liczby może być podany ciąg: 'Not specified' -> co wtedy???
 def convert_text_time_to_hours(text_time: str) -> float:
     time_list_values = text_time.split()
     days = 0
