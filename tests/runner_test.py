@@ -1,6 +1,6 @@
 from jira_reader import runner
 
 
+# TODO: funkcja do usunięcia
 def test_number():
-    value = runner.test_func(2)
-    assert value == 4
+    assert 4 == 4

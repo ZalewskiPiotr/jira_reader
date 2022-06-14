@@ -2,7 +2,12 @@ import requests  # trzecia
 from bs4 import BeautifulSoup  # trzecia
 
 
-# TODO: dodać Unittest - w czasie estimated zamiast liczby może być podany ciąg: 'Not specified' -> co wtedy???
+# TODO: dodać Unittest - dla ciągu 'Not specified' -> co wtedy???
+# TODO: dodać Unittest - dla ciągu 10d 7h
+# TODO: dodać Unittest - dla ciągu 4d
+# TODO: dodać Unittest - dla ciągu 5h
+# TODO: dodać Unittest - dla ciągu 3.5h
+# TODO: dodać Unittest - dla pustego ciągu
 def convert_text_time_to_hours(text_time: str) -> float:
     time_list_values = text_time.split()
     days = 0
@@ -12,8 +17,8 @@ def convert_text_time_to_hours(text_time: str) -> float:
             days = float(time[0:time.find('d')])
         if 'h' in time:
             hours = float(time[0:time.find('h')])
-    sum_time = days * 8 + hours
-    return sum_time
+    total_time = days * 8 + hours
+    return total_time
 
 
 def get_page_content(url: str, username: str, password: str):

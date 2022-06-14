@@ -11,18 +11,33 @@ Skrypt zawiera funkcje:
     Główna funkcja sterująca przepływem programu
 """
 # Standard library imports
+
 # Third party imports
+
 # Local imports
 import jira_reader as jr
 import jira_reader.jira as jira
 
 
-def test_func(number):
-    return number + 2
+def show_program_information():
+    """ Wyświetlenie informacji o programie
+
+    Funkcja wyświetla informacje o wersji programu oraz o jego autorze. Informacje te odczytuje z pliku __init.py__
+
+    :return: ---
+    :rtype: ---
+    """
+    # TODO: zmienić sposób pobierania numeru wersji. Trzeba otworzyć plik __init__.py i poszukać ciągu z wersją. Wtedy można usunąć import jira_reader as jr
+    # TODO: w podobny jak wyżej sposób dodać jeszcze info o autorze
+    print(f"hello. My name is {__name__} and version is {jr.__version__}")
 
 
 def main():
-    print(f"hello. My name is {__name__} and version is {jr.__version__}")
+    """ Główna funkcja sterująca przepływem programu.
+
+    Funkcja uruchamia kolejne funkcje i steruje przepływem danych pomiędzy funkcjami.
+    """
+    show_program_information()
 
     task_url = input('Podaj adres taska: ')
     username = input('Podaj nazwę użytkownika: ')
