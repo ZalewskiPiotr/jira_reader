@@ -26,6 +26,7 @@ Wyjątki (exceptions):
 ---------------------
 - brak
 """
+import pathlib
 
 from jira_reader import jira
 
@@ -88,7 +89,9 @@ def test_get_information_about_task_put_correct_task_get_correct_values():
     """
     Jeżeli podane zostaną prawidłowe wartości o tasku z Jiry, to zwrócone zostaną prawidłowe informacje o czasach.
     """
-    with open('.\\data\\test_task.html', 'r') as task_file:
+    working_directory_path = pathlib.Path.cwd()
+    test_file_path = working_directory_path.joinpath('data', 'test_task').with_suffix('.html')
+    with open(test_file_path, 'r') as task_file:
         file_content = task_file.read()
     estimated, remaining, logged = jira.get_information_about_task(file_content)
     assert estimated == 0
