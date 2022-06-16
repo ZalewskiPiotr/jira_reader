@@ -7,13 +7,13 @@ Uruchomienie skryptu odbywa się poprzez wywołanie:
 
 Skrypt zawiera funkcje:
 -----------------------
+- show_program_information()
+    Wyświetlenie informacji o programie
 - main()
     Główna funkcja sterująca przepływem programu
 """
 # Standard library imports
-
 # Third party imports
-
 # Local imports
 import jira_reader as jr
 import jira_reader.jira as jira
@@ -28,8 +28,7 @@ def show_program_information():
     :rtype: ---
     """
     # TODO: zmienić sposób pobierania numeru wersji. Trzeba otworzyć plik __init__.py i poszukać ciągu z wersją. Wtedy można usunąć import jira_reader as jr
-    # TODO: w podobny jak wyżej sposób dodać jeszcze info o autorze
-    print(f"hello. My name is {__name__} and version is {jr.__version__}")
+    print(f"hello. My name is {__name__} and version is {jr.__version__} and author is {jr.__author__}")
 
 
 def main():

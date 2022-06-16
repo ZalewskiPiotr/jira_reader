@@ -1,14 +1,48 @@
-import requests  # trzecia
-from bs4 import BeautifulSoup  # trzecia
+"""
+Moduł odczytuje dane ze stron Jiry
+
+Moduł zawiera funkcje, które są odpowiedzialne za pobieranie danych ze stron Jiry
+
+Klasy:
+------
+- brak klas
+
+Funkcje:
+--------
+- convert_text_time_to_hours(text_time: str) -> float:
+    Zamiana ciągu znaków na godziny
+- get_page_content(url: str, username: str, password: str):
+    Pobranie zawartości strony internetowej
+- get_information_about_task(content: str) -> tuple[float, float, float]:
+    Pobranie informacji o jednym tasku z Jiry
+
+Wyjątki (exceptions):
+---------------------
+- brak
+"""
+
+# Standard library imports
+# Third party imports
+import requests
+from bs4 import BeautifulSoup
+# Local imports
 
 
-# TODO: dodać Unittest - dla ciągu 'Not specified' -> co wtedy???
-# TODO: dodać Unittest - dla ciągu 10d 7h
-# TODO: dodać Unittest - dla ciągu 4d
-# TODO: dodać Unittest - dla ciągu 5h
-# TODO: dodać Unittest - dla ciągu 3.5h
-# TODO: dodać Unittest - dla pustego ciągu
 def convert_text_time_to_hours(text_time: str) -> float:
+    """ Zamiana ciągu znaków na godziny
+
+    Funkcja zamienia otrzymany ciąg znaków na godziny. Ciąg znaków jest pobierany z Jiry i oprócz liczby zawiera
+    oznaczenie dni lub godzin. Ciąg może przyjmować postacie: 'Not specified', '10d 3h', '7h', '5d', 3.5h. Dla wartości,
+    które nie posiadają liczby funkcja zwraca 0.
+
+    :param text_time: Ciąg znaków zawierający czas
+    :type text_time: str
+    :return: Ilość godzin ustalona na podstawie ciągu wejściowego
+    :rtype: float
+    """
+    if text_time.lower() == 'not specified':
+        return 0
+
     time_list_values = text_time.split()
     days = 0
     hours = 0
@@ -21,10 +55,26 @@ def convert_text_time_to_hours(text_time: str) -> float:
     return total_time
 
 
-def get_page_content(url: str, username: str, password: str):
+def get_page_content(url: str, username: str, password: str) -> str:
+    """ Pobranie zawartości strony internetowej
+
+    Funkcja na podstawie podanego adresu url pobiera zawartość strony, która znajduje się pod podanym adresem. Ponieważ
+    program dedykowany jest do pobierania zawartości stron Jiry, to wymagane jest także podanie danych do logowania
+    do Jiry.
+
+    :param url: Adres strony do pobrania
+    :type url: str
+    :param username: Nazwa użytkownika Jiry
+    :type username: str
+    :param password: Hasło użytkownika Jiry
+    :type password: str
+    :return: Zawartość strony www w postaci HTML
+    :rtype: str
+    """
     session = requests.Session()
     session.auth = (username, password)
 
+    # TODO: powalczyć jeszcze z weryfikacją certyfikatu -> patrz info od Marka
     response = session.get(url, verify=False)
     if not response.ok:
         response.raise_for_status()
@@ -32,6 +82,16 @@ def get_page_content(url: str, username: str, password: str):
 
 
 def get_information_about_task(content: str) -> tuple[float, float, float]:
+    """ Pobranie informacji o jednym tasku z Jiry
+
+    Funkcja otrzymuje stronę z Jiry z informacjami o jednym tasku. Na podstawie otrzymanej zawartości funkcja odszukuje
+    informacje o czasie dotyczącym jednego taska.
+
+    :param content: Zawartość strony Jiry z informacjami o jednym tasku w postaci HTML
+    :type content: str
+    :return: Odczytane informacje o czasie: estimated, remaining, logged
+    :rtype: tuple[float, float, float]
+    """
     soup = BeautifulSoup(content, features='lxml')
     estimated_text = soup.find(id='tt_single_values_orig').text.strip()
     remaining_text = soup.find(id='tt_single_values_remain').text.strip()
