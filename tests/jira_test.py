@@ -7,6 +7,8 @@ Klasy:
 
 Funkcje:
 --------
+- get_path_to_test_data(file_name: str, file_suffix: str) -> pathlib.PurePath:
+    Ustalenie ścieżki do pliku z danymi potrzebnymi w czasie uruchomienia testów
 - test_convert_text_time_to_hours_put_days_and_hours_get_total_hours()
     Jeżeli podany zostanie ciąg '10d 7h' zwrócona zostanie sumaryczna ilość godzin
 - test_convert_text_time_to_hours_put_days_get_total_hours()
@@ -26,8 +28,25 @@ Wyjątki (exceptions):
 ---------------------
 - brak
 """
-
+# Standard library imports
+import pathlib
+# Third party imports
+# Local imports
 from jira_reader import jira
+
+
+def get_path_to_test_data(file_name: str, file_suffix: str) -> pathlib.PurePath:
+    """
+    Ustalenie ścieżki do pliku z danymi potrzebnymi w czasie uruchomienia testów
+    :param file_name: Nazwa pliku z danymi do testów
+    :type file_name: str
+    :param file_suffix: Rozszerzenie pliku z danymi do testów
+    :type file_suffix: str
+    :return: Ścieżka do pliku z danymi do testów
+    :rtype: pathlib.PurePath
+    """
+    working_directory_path = pathlib.Path.cwd()
+    return working_directory_path.joinpath('data', file_name).with_suffix('.' + file_suffix)
 
 
 def test_convert_text_time_to_hours_put_days_and_hours_get_total_hours():
@@ -88,7 +107,8 @@ def test_get_information_about_task_put_correct_task_get_correct_values():
     """
     Jeżeli podane zostaną prawidłowe wartości o tasku z Jiry, to zwrócone zostaną prawidłowe informacje o czasach.
     """
-    with open('.\\data\\test_task.html', 'r') as task_file:
+    test_file_path = get_path_to_test_data('test_task', 'html')
+    with open(test_file_path, 'r') as task_file:
         file_content = task_file.read()
     estimated, remaining, logged = jira.get_information_about_task(file_content)
     assert estimated == 0
