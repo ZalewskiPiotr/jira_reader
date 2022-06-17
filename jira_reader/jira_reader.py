@@ -1,11 +1,8 @@
-""" Skrypt uruchamiający i sterujący programem 'Jira reader'
+""" Moduł sterujący programem 'Jira reader'
 
-Ten skrypt uruchamia program i steruje jego przepływem.
+Ten moduł steruje przepływem wykonania programu.
 
-Uruchomienie skryptu odbywa się poprzez wywołanie:
-`python runner.py`
-
-Skrypt zawiera funkcje:
+Moduł zawiera funkcje:
 -----------------------
 - show_program_information()
     Wyświetlenie informacji o programie
@@ -15,8 +12,8 @@ Skrypt zawiera funkcje:
 # Standard library imports
 # Third party imports
 # Local imports
-import jira_reader as jr
-import jira_reader.jira as jira
+import jira_reader
+from jira_reader import jira
 
 
 def show_program_information():
@@ -28,7 +25,7 @@ def show_program_information():
     :rtype: ---
     """
     # TODO: zmienić sposób pobierania numeru wersji. Trzeba otworzyć plik __init__.py i poszukać ciągu z wersją. Wtedy można usunąć import jira_reader as jr
-    print(f"hello. My name is {__name__} and version is {jr.__version__} and author is {jr.__author__}")
+    print(f"hello. My name is {__name__} and version is {jira_reader.__version__} and author is {jira_reader.__author__}")
 
 
 def main():
@@ -48,7 +45,3 @@ def main():
     print('Please wait... I\'m gathering information about task...')
     estimated, remaining, logged = jira.get_information_about_task(content)
     print(estimated, remaining, logged)
-
-
-if __name__ == '__main__':
-    main()

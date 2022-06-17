@@ -1,4 +1,4 @@
-from jira_reader.runner import main
+import runner
 
 if __name__ == '__main__':
-    main()
+    runner.main()
