@@ -11,6 +11,8 @@ Skrypt zawiera funkcje:
     Wyświetlenie metadanych programu
 - get_data_for_connection_to_jira() -> tuple[str, str, str]:
     Pobranie informacji o adresie url taska oraz danych do logowania do Jiry
+- main()
+    Sterowanie przepływem programu
 """
 # Standard library imports
 import getpass
@@ -50,8 +52,15 @@ def get_data_for_connection_to_jira() -> tuple[str, str, str]:
     return url_for_task, name_of_user, passwd
 
 
-if __name__ == '__main__':
+def main():
+    """ Sterowanie przepływem programu
+
+    Jest to główna funkcja, która steruje przepływem programu
+    """
     show_program_metadata()
     task_url, username, password = get_data_for_connection_to_jira()
     jr.main(task_url, username, password)
 
+
+if __name__ == '__main__':
+    main()
