@@ -13,15 +13,11 @@ Moduł zawiera funkcje:
 from jira_reader import jira
 
 
-def main():
+def main(task_url: str, username: str, password: str):
     """ Główna funkcja sterująca przepływem programu.
 
     Funkcja uruchamia kolejne funkcje i steruje przepływem danych pomiędzy funkcjami.
     """
-    task_url = input('Podaj adres taska: ')
-    username = input('Podaj nazwę użytkownika: ')
-    password = input('Podaj hasło: ')
-
     print('Please wait... I\'m connecting to Jira...')
     content = jira.get_page_content(task_url, username, password)
 

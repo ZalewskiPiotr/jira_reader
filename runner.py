@@ -9,6 +9,8 @@ Skrypt zawiera funkcje:
 -----------------------
 - show_program_metadata()
     Wyświetlenie metadanych programu
+- get_data_for_connection_to_jira() -> tuple[str, str, str]:
+    Pobranie informacji o adresie url taska oraz danych do logowania do Jiry
 """
 # Standard library imports
 # Third party imports
@@ -31,7 +33,22 @@ def show_program_metadata():
     print('-' * 96)
 
 
+def get_data_for_connection_to_jira() -> tuple[str, str, str]:
+    """ Pobranie informacji o adresie url taska oraz danych do logowania do Jiry
+
+    Funkcja pobiera od użytkownika dane do logowania oraz adres taska, dla którego mają zostać wyświetlone informacje.
+
+    :return: adres url taska z Jiry, nazwa użytkownika, hasło użytkownika
+    :rtype: tuple[str, str, str]
+    """
+    url_for_task = input('Podaj adres taska: ')
+    name_of_user = input('Podaj nazwę użytkownika: ')
+    passwd = input('Podaj hasło: ')
+    return url_for_task, name_of_user, passwd
+
+
 if __name__ == '__main__':
     show_program_metadata()
-    jr.main()
+    task_url, username, password = get_data_for_connection_to_jira()
+    jr.main(task_url, username, password)
 
