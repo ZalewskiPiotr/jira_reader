@@ -13,7 +13,10 @@ Skrypt zawiera funkcje:
     Pobranie informacji o adresie url taska oraz danych do logowania do Jiry
 """
 # Standard library imports
+import getpass
+
 # Third party imports
+
 # Local imports
 import jira_reader
 from jira_reader import jira_reader as jr
@@ -43,7 +46,7 @@ def get_data_for_connection_to_jira() -> tuple[str, str, str]:
     """
     url_for_task = input('Podaj adres taska: ')
     name_of_user = input('Podaj nazwę użytkownika: ')
-    passwd = input('Podaj hasło: ')
+    passwd = getpass.getpass(prompt='Podaj hasło: ', stream=None)
     return url_for_task, name_of_user, passwd
 
 
