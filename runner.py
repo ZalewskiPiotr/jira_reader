@@ -59,7 +59,10 @@ def main():
     """
     show_program_metadata()
     task_url, username, password = get_data_for_connection_to_jira()
-    jr.main(task_url, username, password)
+    # TODO: jakoś inaczej nazwać zmienną jira_rd
+    jira_rd = jr.JiraReader()
+    jira_rd.show_task_report_in_console(task_url, username, password)
+    jira_rd.show_current_budget_usage_in_console(['111', 'aaa'], 'ssss', 'user', 'pass')
 
 
 if __name__ == '__main__':
