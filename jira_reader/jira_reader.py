@@ -1,5 +1,7 @@
 # Standard library imports
+
 # Third party imports
+
 # Local imports
 from jira_reader import jira
 
@@ -17,10 +19,11 @@ class JiraReader:
 
     Metody:
     -------
-    show_task_report_in_console(self, task_url: str, username: str, password: str):
+    - show_task_report_in_console(self, task_url: str, username: str, password: str):
         Sterowanie procesem zbudowania raportu dla jednego taska z Jiry
     """
 
+    # TODO: zajrzyj na warning, że metoda może być statyczna
     def show_task_report_in_console(self, task_url: str, username: str, password: str):
         """ Sterowanie procesem zbudowania raportu dla jednego taska z Jiry
 
@@ -36,10 +39,11 @@ class JiraReader:
         :rtype: ---
         """
         print('Please wait... I\'m connecting to Jira...')
-        content = jira.get_page_content(task_url, username, password)
+        jira_obj = jira.Jira()
+        content = jira_obj.get_page_content(task_url, username, password)
 
         print('Please wait... I\'m gathering information about task...')
-        estimated, remaining, logged = jira.get_information_about_task(content)
+        estimated, remaining, logged = jira_obj.get_information_about_task(content)
         print(estimated, remaining, logged)
 
     # TODO: dodać poniższą funkcję do dokumentacji na górze klasy
