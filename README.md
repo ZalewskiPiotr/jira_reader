@@ -26,26 +26,33 @@ Pakiet jest wykorzystywany do przygotowania wersji dystrybucyjnej programu. Paki
 pip install pyinstaller
 ```
 #### Requests
-Pakiet służy do obsługi protokołu http
+Pakiet służy do obsługi protokołu http. Pakiet należy zainstalować poleceniem:
 ```sh
 python -m pip install requests
 ```
 > Uwaga: od wersji 1.1.0 pakiet `requests` będzie wycofywany i zastępowany pakietem `selenium`
 #### Beautifulsoup4
-Pakiet służy do transformacji HTML-a do drzewa zawierającego obiekty Pythona
+Pakiet służy do transformacji HTML-a do drzewa zawierającego obiekty Pythona. Pakiet należy zainstalować poleceniem:
 ```sh
 pip install beautifulsoup4
 ```
 #### Lxml
-Pakiet służy do parsowania HTML-a i XML-a. Jest wykorzystywany jako parser w module `beautifulsoup4`
+Pakiet służy do parsowania HTML-a i XML-a. Jest wykorzystywany jako parser w module `beautifulsoup4`. Pakiet należy
+zainstalować poleceniem:
 ```sh 
 pip install lxml
 ```
 #### Selenium
-Pakiet jest wykorzystywany do pobierania zawartości stron Jiry.
+Pakiet jest wykorzystywany do pobierania zawartości stron Jiry. Pakiet należy zainstalować poleceniem:
 ```sh
 pip install -U selenium
 ```
+Po instalacji pakietu należy pobrać [sterownik do przeglądarki Chrome][chromium-driver]. Sterownik należy dobrać do
+posiadanej wersji przeglądarki.
+Po pobraniu odpowiedniego pliku `zip`, należy go rozpakować i znajdujący się w środku plik `.exe` wgrać do Pythona do 
+katalogu `scripts`. W przypadku, gdy Python został uruchomiony jako środowisko wirtualne w projekcie, to katalogiem do
+którego należy wgrać plik `.exe` jest `projekt/venv/scripts`.
+W wersji 1.1.0 obsługiwana jest tylko przeglądarka Chrome.
 #### Lista pakietów
 Prawidłowe środowisko deweloperskie powinno zawierać poniższą listę pakietów:
 ```sh
@@ -111,7 +118,9 @@ Wersja dystrybucyjna tworzona jest w katalogu:
 
 ## Historia zmian
 
-* 0.0.1
+* 1.1.0
+  * ...
+* 1.0.0
     * Odczytanie i wyświetlenie informacji o jednym wskazanym tasku z Jiry. Pobierane informacje to: czas planowany,
   czas zalogowany, czas pozostały.
 
@@ -128,4 +137,5 @@ Program jest rozpowszechniany na podstawie licencji ``GNU GPL``
 [wiki]: https://github.com/ZalewskiPiotr/jira_reader/wiki
 [licence]: https://pl.wikipedia.org/wiki/GNU_General_Public_License
 [python-version]: https://www.python.org/downloads/release/python-3104/
+[chromium-driver]: https://chromedriver.chromium.org/downloads
 [mail]: mailto:1piotrzalewski@gmail.com
