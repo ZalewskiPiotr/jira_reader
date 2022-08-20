@@ -39,14 +39,14 @@ def show_program_metadata():
 
 
 def get_data_for_connection_to_jira() -> tuple[str, str, str]:
-    """ Pobranie informacji o adresie url taska oraz danych do logowania do Jiry
+    """ Pobranie informacji o adresie url Jiry oraz danych do logowania do Jiry
 
     Funkcja pobiera od użytkownika dane do logowania oraz adres taska, dla którego mają zostać wyświetlone informacje.
 
-    :return: adres url taska z Jiry, nazwa użytkownika, hasło użytkownika
+    :return: adres url Jiry, nazwa użytkownika, hasło użytkownika
     :rtype: tuple[str, str, str]
     """
-    url_for_task = input('Podaj adres taska: ')
+    url_for_task = input('Podaj adres Jiry: ')
     name_of_user = input('Podaj nazwę użytkownika: ')
     passwd = getpass.getpass(prompt='Podaj hasło: ', stream=None)
     return url_for_task, name_of_user, passwd
@@ -58,11 +58,12 @@ def main():
     Jest to główna funkcja, która steruje przepływem programu
     """
     show_program_metadata()
-    task_url, username, password = get_data_for_connection_to_jira()
+    jira_url, username, password = get_data_for_connection_to_jira()
     # TODO: jakoś inaczej nazwać zmienną jira_rd
-    jira_rd = jr.JiraReader()
-    jira_rd.show_task_report_in_console(task_url, username, password)
-    jira_rd.show_current_budget_usage_in_console(['111', 'aaa'], 'ssss', 'user', 'pass')
+    # TODO: pobrać od usera albo jakoś inaczej zmienną 'login.jsp'
+    jira_rd = jr.JiraReader(jira_url, 'login.jsp', username, password)
+    # jira_rd.show_task_report_in_console(task_url, username, password)
+    jira_rd.show_main_epic_data(['AA-268'])
 
 
 if __name__ == '__main__':
