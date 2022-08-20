@@ -35,9 +35,9 @@ class Jira:
 
     def __init__(self):
         """
-        Inicjalizacja webrivera Selenium
+        Definicja zmiennych instancji klasy
         """
-        self._selenium_driver = webdriver.Chrome()
+        self._selenium_driver = None
 
     def __del__(self):
         """
@@ -45,8 +45,8 @@ class Jira:
         """
         self._selenium_driver.quit()
 
-    # TODO: zajrzyj na warning, że metoda może być statyczna
-    def convert_text_time_to_hours(self, text_time: str) -> float:
+    @staticmethod
+    def convert_text_time_to_hours(text_time: str) -> float:
         """ Zamiana ciągu znaków na godziny
 
         Funkcja zamienia otrzymany ciąg znaków na godziny. Ciąg znaków jest pobierany z Jiry i oprócz liczby zawiera
@@ -88,6 +88,7 @@ class Jira:
         :return: brak
         :rtype: ---
         """
+        self._selenium_driver = webdriver.Chrome()
         driver = webdriver.Chrome()
         driver.maximize_window()
         driver.get(login_page_url)
@@ -111,9 +112,9 @@ class Jira:
         self._selenium_driver.get(url)
         return self._selenium_driver.page_source
 
-    # TODO: zajrzyj na warning, że metoda może być statyczna
     # TODO: metoda raczej do usunięcia. Zrezygnowałem z biblioteki 'requests'
-    def get_page_content(self, url: str, username: str, password: str) -> str:
+    @staticmethod
+    def get_page_content(url: str, username: str, password: str) -> str:
         """ Pobranie zawartości strony internetowej
 
         Funkcja na podstawie podanego adresu url pobiera zawartość strony, która znajduje się pod podanym adresem. Ponieważ
