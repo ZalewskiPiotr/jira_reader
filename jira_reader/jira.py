@@ -1,5 +1,6 @@
 # Standard library imports
 # Third party imports
+import bs4.element
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup
@@ -134,6 +135,16 @@ class Jira:
 
         return estimated_time, remaining_time, logged_time
 
+    # TODO: dodać dokumentację
+    # TODO: dodać odczytanie czasów !!!!!
+    @staticmethod
+    def get_times(tag_times: bs4.element.Tag) -> tuple[float, float, float]:
+        if tag_times is None:
+            raise TypeError("Nie znaleziono pozycji 'Time' w 'Summary Panel' dla epika")
+        if len(tag_times) > 1:
+            raise ValueError(f"Znaleziono zbyt dużo ({tag_times}) pozycji 'Time' w 'Summary Panel' dla epika")
+        return 0, 0, 0
+
     # TODO: dodać testy jednostkowe
     def get_information_about_epic(self, content: str) -> tuple[str, str, float, float, float, float]:
         """ Pobranie informacji o epiku z Jiry
@@ -149,11 +160,10 @@ class Jira:
         soup = BeautifulSoup(content, features='lxml')
         epic_name = soup.find(id='summary-val').text.strip()
         epic_key = soup.find(id='key-val').text.strip()
-        epic_budget = soup.find(id='customfield_12300-val').text.strip()
+        # TODO: poprawić pobieranie budżetu ze strony
+        # epic_budget = soup.find(id='customfield_12300-val').text.strip()
         times_list = soup.findAll('dd', class_='tt_values')  # wykorzystać parametr title aby odczytac dane. Sprawdzic czy jest jedna pozycja na liście
-        epic_estimated_time_text = ''
-        epic_logged_time_text = '34d'
-        epic_remaining_time_text = '0d'  # TODO: pobrać informacje
+        epic_estimated_time_text, epic_logged_time_text, epic_remaining_time_text = get_times(soup.find(class_='tt_values'))
 
         epic_estimated_time = self.convert_text_time_to_hours(epic_estimated_time_text)
         epic_remaining_time = self.convert_text_time_to_hours(epic_remaining_time_text)

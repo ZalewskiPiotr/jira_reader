@@ -23,6 +23,12 @@ Funkcje:
     Jeżeli podany zostanie ciąg 'Not specified', zwrócone zostanie zero
 - test_get_information_about_task_put_correct_task_get_correct_values()
     Jeżeli podane zostaną prawidłowe wartości o tasku z Jiry, to zwrócone zostaną prawidłowe informacje o czasach.
+- test_get_times_put_none_tag_get_error()
+    Jeżeli podany zostanie pusty obiekt (nie znaleziony w pliku HTML), to zwrócony zostanie wyjątek
+- test_get_times_put_tag_list_get_error()
+    Jeżeli podanych zostanie więcej tagów niż 1, to zwrócony zostanie wyjątek
+- test_get_times_put_correct_tag_get_correct_values()
+    Jeżeli podany zostanie prawidłowy tag, to metoda zwróci czasy w postaci liczby godzin
 
 Wyjątki (exceptions):
 ---------------------
@@ -31,6 +37,8 @@ Wyjątki (exceptions):
 # Standard library imports
 import pathlib
 # Third party imports
+import pytest
+from bs4 import BeautifulSoup
 # Local imports
 from jira_reader import jira
 
@@ -121,3 +129,39 @@ def test_get_information_about_task_put_correct_task_get_correct_values():
     assert estimated == 0
     assert remaining == 7
     assert logged == 16
+
+
+def test_get_times_put_none_tag_get_error():
+    """
+    Jeżeli podany zostanie pusty obiekt (nie znaleziony w pliku HTML), to zwrócony zostanie wyjątek
+    """
+    html = ''
+    soup = BeautifulSoup(html, 'html.parser')
+    tag = soup.dd
+    with pytest.raises(TypeError):
+        jira.Jira.get_times(tag)
+
+
+def test_get_times_put_tag_list_get_error():
+    """
+    Jeżeli podanych zostanie więcej tagów niż 1, to zwrócony zostanie wyjątek
+    """
+    html = '<dd class="tt_values" title="Time spent: 446.2h\nRemaining: 1.0h\nEstimated: 319.5h">446.2h / 319.5h</dd>' \
+           '\n<dd class="tt_values" title="Time spent: 446.2h\nRemaining: 1.0h\nEstimated: 319.5h">446.2h / 319.5h</dd>'
+    soup = BeautifulSoup(html, 'html.parser')
+    tag = soup.find_all('dd')
+    with pytest.raises(ValueError):
+        jira.Jira.get_times(tag)
+
+
+def test_get_times_put_correct_tag_get_correct_values():
+    """
+    Jeżeli podany zostanie prawidłowy tag, to metoda zwróci czasy w postaci liczby godzin
+    """
+    html = '<dd class="tt_values" title="Time spent: 446.2h\nRemaining: 1.0h\nEstimated: 319.5h">446.2h / 319.5h</dd>'
+    soup = BeautifulSoup(html, 'html.parser')
+    tag = soup.find_all('dd')
+    spent, remaining, estimated = jira.Jira.get_times(tag)
+    assert spent == 446.2
+    assert remaining == 1.0
+    assert estimated == 319.5

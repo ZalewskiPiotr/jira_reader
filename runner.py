@@ -62,7 +62,7 @@ def main():
     # TODO: pobrać od usera albo jakoś inaczej zmienną 'login.jsp'. Dodam taką pozycję do pliku konfiguracyjnego. Na razie zostaje na stałe
     reader_jira = jr.JiraReader(jira_url, 'login.jsp', username, password)
     # reader.show_task_report_in_console(task_url, username, password)
-    reader_jira.show_main_epic_data(['AA-268'])
+    reader_jira.show_main_epic_data(['AA-294'])
 
 
 if __name__ == '__main__':
