@@ -2,7 +2,6 @@
 # Third party imports
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-import requests
 from bs4 import BeautifulSoup
 # Local imports
 
@@ -111,33 +110,6 @@ class Jira:
         """
         self._selenium_driver.get(url)
         return self._selenium_driver.page_source
-
-    # TODO: metoda raczej do usunięcia. Zrezygnowałem z biblioteki 'requests'
-    @staticmethod
-    def get_page_content(url: str, username: str, password: str) -> str:
-        """ Pobranie zawartości strony internetowej
-
-        Funkcja na podstawie podanego adresu url pobiera zawartość strony, która znajduje się pod podanym adresem. Ponieważ
-        program dedykowany jest do pobierania zawartości stron Jiry, to wymagane jest także podanie danych do logowania
-        do Jiry.
-
-        :param url: Adres strony do pobrania
-        :type url: str
-        :param username: Nazwa użytkownika Jiry
-        :type username: str
-        :param password: Hasło użytkownika Jiry
-        :type password: str
-        :return: Zawartość strony www w postaci HTML
-        :rtype: str
-        """
-        session = requests.Session()
-        session.auth = (username, password)
-
-        # TODO: powalczyć jeszcze z weryfikacją certyfikatu -> patrz info od Marka
-        response = session.get(url, verify=False)
-        if not response.ok:
-            response.raise_for_status()
-        return response.text
 
     # TODO: to już chyba nie będzie potrzebne. Na razie dane pobieram z epika. Do przemyślenia.
     def get_information_about_task(self, content: str) -> tuple[float, float, float]:

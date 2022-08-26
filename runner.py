@@ -59,11 +59,10 @@ def main():
     """
     show_program_metadata()
     jira_url, username, password = get_data_for_connection_to_jira()
-    # TODO: jakoś inaczej nazwać zmienną jira_rd
-    # TODO: pobrać od usera albo jakoś inaczej zmienną 'login.jsp'
-    jira_rd = jr.JiraReader(jira_url, 'login.jsp', username, password)
-    # jira_rd.show_task_report_in_console(task_url, username, password)
-    jira_rd.show_main_epic_data(['AA-268'])
+    # TODO: pobrać od usera albo jakoś inaczej zmienną 'login.jsp'. Dodam taką pozycję do pliku konfiguracyjnego. Na razie zostaje na stałe
+    reader_jira = jr.JiraReader(jira_url, 'login.jsp', username, password)
+    # reader.show_task_report_in_console(task_url, username, password)
+    reader_jira.show_main_epic_data(['AA-268'])
 
 
 if __name__ == '__main__':

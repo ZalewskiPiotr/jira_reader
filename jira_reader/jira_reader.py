@@ -57,9 +57,9 @@ class JiraReader:
         self._password = password
         self._login_url = f"{jira_url}/{login_page}"  # adres url dostrony logowania do Jiry
 
-    # TODO: zajrzyj na warning, że metoda może być statyczna
     # TODO: metoda nie jest wykorzystywana - chyba do usunięcia
-    def show_task_report_in_console(self, task_url: str, username: str, password: str):
+    @staticmethod
+    def show_task_report_in_console(task_url: str, username: str, password: str):
         """ Sterowanie procesem zbudowania raportu dla jednego taska z Jiry
 
         Metoda nadzoruje proces pobrania danych z Jiry oraz wyświetlenia raportu w konsoli dla podanego taska z Jiry.

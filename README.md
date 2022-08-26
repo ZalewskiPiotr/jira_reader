@@ -30,7 +30,7 @@ Pakiet służy do obsługi protokołu http. Pakiet należy zainstalować polecen
 ```sh
 python -m pip install requests
 ```
-> Uwaga: od wersji 1.1.0 pakiet `requests` będzie wycofywany i zastępowany pakietem `selenium`
+> Uwaga: od wersji 1.1.0 pakiet `requests` został wycofany i zastąpiony pakietem `selenium`
 #### Beautifulsoup4
 Pakiet służy do transformacji HTML-a do drzewa zawierającego obiekty Pythona. Pakiet należy zainstalować poleceniem:
 ```sh
