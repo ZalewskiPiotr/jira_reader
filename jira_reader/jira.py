@@ -50,8 +50,8 @@ class Jira:
         """ Zamiana ciągu znaków na godziny
 
         Funkcja zamienia otrzymany ciąg znaków na godziny. Ciąg znaków jest pobierany z Jiry i oprócz liczby zawiera
-        oznaczenie dni lub godzin. Ciąg może przyjmować postacie: 'Not specified', '10d 3h', '7h', '5d', 3.5h. Dla wartości,
-        które nie posiadają liczby funkcja zwraca 0.
+        oznaczenie dni lub godzin. Ciąg może przyjmować postacie: 'Not specified', '10d 3h', '7h', '5d', 3.5h. Dla
+        wartości, które nie posiadają liczby funkcja zwraca 0.
 
         :param text_time: Ciąg znaków zawierający czas
         :type text_time: str
@@ -136,14 +136,32 @@ class Jira:
         return estimated_time, remaining_time, logged_time
 
     # TODO: dodać dokumentację
-    # TODO: dodać odczytanie czasów !!!!!
-    @staticmethod
-    def get_times(tag_times: bs4.element.Tag) -> tuple[float, float, float]:
-        if tag_times is None:
+    # TODO: tag_times może nie mieć atrybutu 'title' -> zrobić test jednostkowy
+    @classmethod
+    def get_times(cls, tag_list: list[bs4.element.Tag]) -> tuple[float, float, float]:
+        if tag_list is None:
             raise TypeError("Nie znaleziono pozycji 'Time' w 'Summary Panel' dla epika")
-        if len(tag_times) > 1:
-            raise ValueError(f"Znaleziono zbyt dużo ({tag_times}) pozycji 'Time' w 'Summary Panel' dla epika")
-        return 0, 0, 0
+        if len(tag_list) > 1 or len(tag_list) == 0:
+            raise ValueError(f"Znaleziono nieprawidłową ilość ({tag_list}) pozycji 'Time' w 'Summary Panel' dla epika")
+
+        time_tag = tag_list[0]
+        time_string = time_tag['title']
+        time_list = time_string.split('\n')
+
+        spent = 0
+        remaining = 0
+        estimated = 0
+
+        for time in time_list:
+            time_values = time.split(':')
+            if time_values[0].upper() == 'TIME SPENT':
+                spent = cls.convert_text_time_to_hours(time_values[1])
+            if time_values[0].upper() == 'REMAINING':
+                remaining = cls.convert_text_time_to_hours(time_values[1])
+            if time_values[0].upper() == 'ESTIMATED':
+                estimated = cls.convert_text_time_to_hours(time_values[1])
+
+        return spent, remaining, estimated
 
     # TODO: dodać testy jednostkowe
     def get_information_about_epic(self, content: str) -> tuple[str, str, float, float, float, float]:
@@ -163,11 +181,13 @@ class Jira:
         # TODO: poprawić pobieranie budżetu ze strony
         # epic_budget = soup.find(id='customfield_12300-val').text.strip()
         times_list = soup.findAll('dd', class_='tt_values')  # wykorzystać parametr title aby odczytac dane. Sprawdzic czy jest jedna pozycja na liście
-        epic_estimated_time_text, epic_logged_time_text, epic_remaining_time_text = get_times(soup.find(class_='tt_values'))
+        epic_estimated_time_text, epic_logged_time_text, epic_remaining_time_text = self.get_times(soup.find_all(class_='tt_values'))
 
         epic_estimated_time = self.convert_text_time_to_hours(epic_estimated_time_text)
         epic_remaining_time = self.convert_text_time_to_hours(epic_remaining_time_text)
         epic_logged_time = self.convert_text_time_to_hours(epic_logged_time_text)
 
-        return epic_name, epic_key, epic_budget, epic_estimated_time, epic_logged_time, epic_remaining_time
+        # TODO: odremować linijkę z epic_budget
+        #return epic_name, epic_key, epic_budget, epic_estimated_time, epic_logged_time, epic_remaining_time
+        return epic_name, epic_key, 0, epic_estimated_time, epic_logged_time, epic_remaining_time
 
