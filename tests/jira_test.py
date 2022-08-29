@@ -29,6 +29,8 @@ Funkcje:
     Jeżeli podanych zostanie więcej tagów niż 1, to zwrócony zostanie wyjątek
 - test_get_times_put_correct_tag_get_correct_values()
     Jeżeli podany zostanie prawidłowy tag, to metoda zwróci czasy w postaci liczby godzin
+- test_get_times_put_tag_without_title_get_error()
+    Jeżeli podanych zostanie tag bez atrybuty 'title', to zwrócony zostanie wyjątek
 
 Wyjątki (exceptions):
 ---------------------
@@ -165,3 +167,14 @@ def test_get_times_put_correct_tag_get_correct_values():
     assert spent == 446.2
     assert remaining == 1.0
     assert estimated == 319.5
+
+
+def test_get_times_put_tag_without_title_get_error():
+    """
+    Jeżeli podanych zostanie tag bez atrybuty 'title', to zwrócony zostanie wyjątek
+    """
+    html = '<dd class="tt_values" no_title="Time spent: 46.2h\nRemaining: 1.0h\nEstimated: 39.5h">46.2h / 39.5h</dd>'
+    soup = BeautifulSoup(html, 'html.parser')
+    tag = soup.find_all('dd')
+    with pytest.raises(KeyError):
+        jira.Jira.get_times(tag)

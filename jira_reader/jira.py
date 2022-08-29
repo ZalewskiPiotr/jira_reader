@@ -29,8 +29,11 @@ class Jira:
         Pobranie zawartości strony internetowej
     - get_information_about_task(content: str) -> tuple[float, float, float]:
         Pobranie informacji o jednym tasku z Jiry
+    - get_times(cls, tag_list: list[bs4.element.Tag]) -> tuple[float, float, float]:
+        Pobranie informacji o sumarycznych czasach w epiku
     - get_information_about_epic(self, content: str) -> tuple[str, str, float, float, float, float]:
         Pobranie informacji o epiku z Jiry
+
     """
 
     def __init__(self):
@@ -135,10 +138,19 @@ class Jira:
 
         return estimated_time, remaining_time, logged_time
 
-    # TODO: dodać dokumentację
     # TODO: tag_times może nie mieć atrybutu 'title' -> zrobić test jednostkowy
     @classmethod
     def get_times(cls, tag_list: list[bs4.element.Tag]) -> tuple[float, float, float]:
+        """ Pobranie informacji o sumarycznych czasach w epiku
+
+        Funkcja pobiera z przekazanego taga informacje o sumarycznych czasach na epiku.
+
+        :param tag_list: lista tagów 'dd'. Prawidłowo na liście powinien być tylko jeden tag. Jeżeli pojawi się więcej,
+        to trzeba zmienić sposób wyszukiwania tagów.
+        :type tag_list: list[bs4.element.Tag]
+        :return: Sumaryczna informacja o czasach z epika: spent, remaining, estimated
+        :rtype: tuple[float, float, float]
+        """
         if tag_list is None:
             raise TypeError("Nie znaleziono pozycji 'Time' w 'Summary Panel' dla epika")
         if len(tag_list) > 1 or len(tag_list) == 0:
@@ -176,18 +188,20 @@ class Jira:
         :rtype: tuple[str, str, float, float, float. float]
         """
         soup = BeautifulSoup(content, features='lxml')
+
+        # Pobranie podstawowych informacji z epika
         epic_name = soup.find(id='summary-val').text.strip()
         epic_key = soup.find(id='key-val').text.strip()
-        # TODO: poprawić pobieranie budżetu ze strony
-        # epic_budget = soup.find(id='customfield_12300-val').text.strip()
-        times_list = soup.findAll('dd', class_='tt_values')  # wykorzystać parametr title aby odczytac dane. Sprawdzic czy jest jedna pozycja na liście
-        epic_estimated_time_text, epic_logged_time_text, epic_remaining_time_text = self.get_times(soup.find_all(class_='tt_values'))
 
-        epic_estimated_time = self.convert_text_time_to_hours(epic_estimated_time_text)
-        epic_remaining_time = self.convert_text_time_to_hours(epic_remaining_time_text)
-        epic_logged_time = self.convert_text_time_to_hours(epic_logged_time_text)
+        # TODO: poprawić pobieranie budżetu ze strony
+        # Pobranie budżetu z epika
+        # epic_budget = soup.find(id='customfield_12300-val').text.strip()
+
+        # Pobranie czasów z epika: spent, remaining, estimated
+        times_list = soup.find_all(class_='tt_values')
+        spent_time, remaining_time, estimated_time = self.get_times(times_list)
 
         # TODO: odremować linijkę z epic_budget
         #return epic_name, epic_key, epic_budget, epic_estimated_time, epic_logged_time, epic_remaining_time
-        return epic_name, epic_key, 0, epic_estimated_time, epic_logged_time, epic_remaining_time
+        return epic_name, epic_key, 0, estimated_time, spent_time, remaining_time
 
