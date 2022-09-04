@@ -1,4 +1,5 @@
 # Standard library imports
+import re
 # Third party imports
 import bs4.element
 from selenium import webdriver
@@ -154,7 +155,8 @@ class Jira:
         if tag_list is None:
             raise TypeError("Nie znaleziono pozycji 'Time' w 'Summary Panel' dla epika")
         if len(tag_list) > 1 or len(tag_list) == 0:
-            raise ValueError(f"Znaleziono nieprawidłową ilość ({tag_list}) pozycji 'Time' w 'Summary Panel' dla epika")
+            raise ValueError(f"Znaleziono nieprawidłową ilość ({len(tag_list)}) pozycji 'Time' w 'Summary Panel' dla "
+                             f"epika.\n {tag_list}")
 
         time_tag = tag_list[0]
         time_string = time_tag['title']
@@ -198,10 +200,10 @@ class Jira:
         # epic_budget = soup.find(id='customfield_12300-val').text.strip()
 
         # Pobranie czasów z epika: spent, remaining, estimated
-        times_list = soup.find_all(class_='tt_values')
+        times_list = soup.find_all(class_='tt_values', title=re.compile('Time spent:'))
         spent_time, remaining_time, estimated_time = self.get_times(times_list)
 
         # TODO: odremować linijkę z epic_budget
-        #return epic_name, epic_key, epic_budget, epic_estimated_time, epic_logged_time, epic_remaining_time
+        # return epic_name, epic_key, epic_budget, epic_estimated_time, epic_logged_time, epic_remaining_time
         return epic_name, epic_key, 0, estimated_time, spent_time, remaining_time
 
