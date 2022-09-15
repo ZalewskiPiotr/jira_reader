@@ -1,5 +1,6 @@
 # Standard library imports
 import re
+import time
 # Third party imports
 import bs4.element
 from selenium import webdriver
@@ -106,7 +107,10 @@ class Jira:
     def get_page_content_selenium(self, url: str) -> str:
         """ Pobranie zawartości strony z Jiry
 
-        Metoda pobiera zawartość strony i zwraca ją w postaci HTML
+        Metoda pobiera zawartość strony i zwraca ją w postaci HTML.
+        W metodzie dodana jest linijka `time.sleep(1)`. Bez tej linijki metoda tylko za pierwszym razem pobierała
+        całą zawartość strony, w kolejnych wywołaniach nie było już zawartości, która ładuje się już po wyświetleniu
+        strony. W związku z tym nie działały funkcje wyszukujące konkretne tagi na stronie.
 
         :param url: Adres strony do pobrania
         :type url: str
@@ -114,6 +118,7 @@ class Jira:
         :rtype: str
         """
         self._selenium_driver.get(url)
+        time.sleep(1)  # Patrz docstrings
         return self._selenium_driver.page_source
 
     # TODO: to już chyba nie będzie potrzebne. Na razie dane pobieram z epika. Do przemyślenia.
