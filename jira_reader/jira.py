@@ -33,6 +33,8 @@ class Jira:
         Pobranie informacji o jednym tasku z Jiry
     - get_times(cls, tag_list: list[bs4.element.Tag]) -> tuple[float, float, float]:
         Pobranie informacji o sumarycznych czasach w epiku
+    - get_epic_budget(cls, tag_list: list[bs4.element.Tag]) -> int:
+        obranie informacji o budżecie wskazanego epika
     - get_information_about_epic(self, content: str) -> tuple[str, str, float, float, float, float]:
         Pobranie informacji o epiku z Jiry
 
@@ -183,6 +185,31 @@ class Jira:
         return spent, remaining, estimated
 
     # TODO: dodać testy jednostkowe
+    @classmethod
+    def get_epic_budget(cls, tag_list: list[bs4.element.Tag]) -> int:
+        """ Pobranie informacji o budżecie wskazanego epika
+
+        Funkcja pobiera z przekazanego epika informację o budżecie.
+
+        :param tag_list: lista tagów 'strong'. Prawidłowo na liście powinien być jeden tag lub zero, jeżeli w epiku nie
+        ma ustawionego budżetu
+        :type tag_list: list[bs4.element.Tag]
+        :return: budżet w formie ilości dni
+        :rtype: int
+        """
+        if tag_list is None or len(tag_list) == 0:
+            return 0
+        if len(tag_list) > 1:
+            raise ValueError(f"Znaleziono nieprawidłową ilość ({len(tag_list)}) pozycji 'Time' w 'Summary Panel' dla "
+                             f"epika.\n {tag_list}")
+
+        budget = 0
+        for sibling_tag in tag_list[0].next_siblings:
+            if sibling_tag.name == 'div':
+                budget = int(sibling_tag.text.strip())
+        return budget
+
+    # TODO: dodać testy jednostkowe
     def get_information_about_epic(self, content: str) -> tuple[str, str, float, float, float, float]:
         """ Pobranie informacji o epiku z Jiry
         Funkcja otrzymuje stronę z Jiry z informacjami o jednym epiku. Na podstawie otrzymanej zawartości funkcja
@@ -200,9 +227,9 @@ class Jira:
         epic_name = soup.find(id='summary-val').text.strip()
         epic_key = soup.find(id='key-val').text.strip()
 
-        # TODO: poprawić pobieranie budżetu ze strony
         # Pobranie budżetu z epika
-        # epic_budget = soup.find(id='customfield_12300-val').text.strip()
+        budget_tag_list = soup.find_all('strong', title='Budżet zadania')
+        budget_days = self.get_epic_budget(budget_tag_list)
 
         # Pobranie czasów z epika: spent, remaining, estimated
         times_list = soup.find_all(class_='tt_values', title=re.compile('Time spent:'))
@@ -210,5 +237,5 @@ class Jira:
 
         # TODO: odremować linijkę z epic_budget
         # return epic_name, epic_key, epic_budget, epic_estimated_time, epic_logged_time, epic_remaining_time
-        return epic_name, epic_key, 0, estimated_time, spent_time, remaining_time
+        return epic_name, epic_key, budget_days, estimated_time, spent_time, remaining_time
 
