@@ -171,8 +171,8 @@ class Jira:
         remaining = 0
         estimated = 0
 
-        for time in time_list:
-            time_values = time.split(':')
+        for one_time in time_list:
+            time_values = one_time.split(':')
             if time_values[0].upper() == 'TIME SPENT':
                 spent = cls.convert_text_time_to_hours(time_values[1])
             if time_values[0].upper() == 'REMAINING':
