@@ -103,7 +103,4 @@ class JiraReader:
 
         del jira_obj
 
-        #with open('tescik2.html', 'w') as tt:
-        #    tt.write(content)
-
 
