@@ -81,7 +81,6 @@ class JiraReader:
         estimated, remaining, logged = jira_obj.get_information_about_task(content)
         print(estimated, remaining, logged)
 
-    # TODO: dodać testy jednostkowe -> być może tu nie będzie testów
     def show_main_epic_data(self, epic_key_list: list):
         """ Pobranie i wyświetlenie podstawowych informacji o epikach
 

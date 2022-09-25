@@ -235,7 +235,5 @@ class Jira:
         times_list = soup.find_all(class_='tt_values', title=re.compile('Time spent:'))
         spent_time, remaining_time, estimated_time = self.get_times(times_list)
 
-        # TODO: odremować linijkę z epic_budget
-        # return epic_name, epic_key, epic_budget, epic_estimated_time, epic_logged_time, epic_remaining_time
         return epic_name, epic_key, budget_days, estimated_time, spent_time, remaining_time
 
