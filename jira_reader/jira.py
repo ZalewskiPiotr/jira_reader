@@ -146,7 +146,6 @@ class Jira:
 
         return estimated_time, remaining_time, logged_time
 
-    # TODO: tag_times może nie mieć atrybutu 'title' -> zrobić test jednostkowy
     @classmethod
     def get_times(cls, tag_list: list[bs4.element.Tag]) -> tuple[float, float, float]:
         """ Pobranie informacji o sumarycznych czasach w epiku
@@ -166,7 +165,10 @@ class Jira:
                              f"epika.\n {tag_list}")
 
         time_tag = tag_list[0]
-        time_string = time_tag['title']
+
+        time_string = time_tag.get('title')
+        if time_string is None:
+            raise KeyError(f"Nie znaleziono atrybutu 'title' w tagu '{time_tag}'")
         time_list = time_string.split('\n')
 
         spent = 0
