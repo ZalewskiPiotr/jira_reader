@@ -171,7 +171,7 @@ def test_get_times_put_correct_tag_get_correct_values():
 
 def test_get_times_put_tag_without_title_get_error():
     """
-    Jeżeli podanych zostanie tag bez atrybuty 'title', to zwrócony zostanie wyjątek
+    Jeżeli podanych zostanie tag bez atrybutu 'title', to zwrócony zostanie wyjątek
     """
     html = '<dd class="tt_values" no_title="Time spent: 46.2h\nRemaining: 1.0h\nEstimated: 39.5h">46.2h / 39.5h</dd>'
     soup = BeautifulSoup(html, 'html.parser')
