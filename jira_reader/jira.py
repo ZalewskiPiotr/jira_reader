@@ -80,7 +80,7 @@ class Jira:
         total_time = days * 8 + hours
         return total_time
 
-    # TODO: dodać testy jednostkowe: nieprawidłowy url (może sprawdzać po tytule strony); złe dane logowania; brak jednego z pól do logowania
+
     def login_jira(self, login_page_url: str, user: str, password: str):
         """ Logowanie do Jiry
 
