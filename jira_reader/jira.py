@@ -107,6 +107,8 @@ class Jira:
             driver.find_element(By.ID, "login-form-password").send_keys(password)
             driver.find_element(By.ID, "login-form-submit").click()
             self._selenium_driver = driver
+            if driver.title == "Log in - Jira Apator":
+                raise PermissionError("Nieprawidłowe dane logowania")
         else:
             raise ConnectionError(f"Nieprawidłowa strona logowania do Jiry {login_page_url}")
 
