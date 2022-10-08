@@ -99,13 +99,15 @@ class Jira:
         driver = webdriver.Chrome()
         driver.maximize_window()
         driver.get(login_page_url)
-        driver.implicitly_wait(3)
-        driver.find_element(By.ID, "login-form-username").send_keys(user)
-        driver.find_element(By.ID, "login-form-password").send_keys(password)
-        driver.find_element(By.ID, "login-form-submit").click()
-        self._selenium_driver = driver
+        if driver.title == "Log in - Jira Apator":
+            driver.implicitly_wait(3)
+            driver.find_element(By.ID, "login-form-username").send_keys(user)
+            driver.find_element(By.ID, "login-form-password").send_keys(password)
+            driver.find_element(By.ID, "login-form-submit").click()
+            self._selenium_driver = driver
+        else:
+            raise ConnectionError(f"Nieprawidłowa strona logowania do Jiry {login_page_url}, {driver.title}")
 
-    # TODO: dodać testy jednostkowe: nieprawidłowy url;
     def get_page_content_selenium(self, url: str) -> str:
         """ Pobranie zawartości strony z Jiry
 
