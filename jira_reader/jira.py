@@ -107,7 +107,7 @@ class Jira:
             driver.find_element(By.ID, "login-form-submit").click()
             self._selenium_driver = driver
         else:
-            raise ConnectionError(f"Nieprawidłowa strona logowania do Jiry {login_page_url}, {driver.title}")
+            raise ConnectionError(f"Nieprawidłowa strona logowania do Jiry {login_page_url}")
 
     def get_page_content_selenium(self, url: str) -> str:
         """ Pobranie zawartości strony z Jiry
