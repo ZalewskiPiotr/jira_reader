@@ -202,7 +202,7 @@ class Jira:
         if tag_list is None or len(tag_list) == 0:
             return 0
         if len(tag_list) > 1:
-            raise ValueError(f"Znaleziono nieprawidłową ilość ({len(tag_list)}) pozycji 'Time' w 'Summary Panel' dla "
+            raise ValueError(f"Znaleziono nieprawidłową ilość ({len(tag_list)}) pozycji 'Budżet zadania' dla "
                              f"epika.\n {tag_list}")
 
         budget = 0
