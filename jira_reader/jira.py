@@ -94,6 +94,8 @@ class Jira:
         :type password: str
         :return: brak
         :rtype: ---
+        :exception: PermissionError - błędne dane logowania
+        :exception: ConnecionErro - nieprawidłowy URL
         """
         driver = webdriver.Chrome()
         driver.maximize_window()
