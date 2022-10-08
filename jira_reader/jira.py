@@ -50,7 +50,8 @@ class Jira:
         """
         Usunięcie webdrivera Selenium
         """
-        self._selenium_driver.quit()
+        if self._selenium_driver:
+            self._selenium_driver.quit()
 
     @staticmethod
     def convert_text_time_to_hours(text_time: str) -> float:
@@ -79,7 +80,7 @@ class Jira:
         total_time = days * 8 + hours
         return total_time
 
-    # TODO: dodać testy jednostkowe: nieprawidłowy url (może sprawdzać po tytule strony); złe dane logowania; brak jednego z pól do logowania
+
     def login_jira(self, login_page_url: str, user: str, password: str):
         """ Logowanie do Jiry
 
@@ -94,18 +95,23 @@ class Jira:
         :type password: str
         :return: brak
         :rtype: ---
+        :exception: PermissionError - błędne dane logowania
+        :exception: ConnecionErro - nieprawidłowy URL
         """
-        self._selenium_driver = webdriver.Chrome()
         driver = webdriver.Chrome()
         driver.maximize_window()
         driver.get(login_page_url)
-        driver.implicitly_wait(3)
-        driver.find_element(By.ID, "login-form-username").send_keys(user)
-        driver.find_element(By.ID, "login-form-password").send_keys(password)
-        driver.find_element(By.ID, "login-form-submit").click()
-        self._selenium_driver = driver
+        if driver.title == "Log in - Jira Apator":
+            driver.implicitly_wait(3)
+            driver.find_element(By.ID, "login-form-username").send_keys(user)
+            driver.find_element(By.ID, "login-form-password").send_keys(password)
+            driver.find_element(By.ID, "login-form-submit").click()
+            self._selenium_driver = driver
+            if driver.title == "Log in - Jira Apator":
+                raise PermissionError("Nieprawidłowe dane logowania")
+        else:
+            raise ConnectionError(f"Nieprawidłowa strona logowania do Jiry {login_page_url}")
 
-    # TODO: dodać testy jednostkowe: nieprawidłowy url;
     def get_page_content_selenium(self, url: str) -> str:
         """ Pobranie zawartości strony z Jiry
 
@@ -186,7 +192,6 @@ class Jira:
 
         return spent, remaining, estimated
 
-    # TODO: dodać testy jednostkowe
     @classmethod
     def get_epic_budget(cls, tag_list: list[bs4.element.Tag]) -> int:
         """ Pobranie informacji o budżecie wskazanego epika
@@ -202,7 +207,7 @@ class Jira:
         if tag_list is None or len(tag_list) == 0:
             return 0
         if len(tag_list) > 1:
-            raise ValueError(f"Znaleziono nieprawidłową ilość ({len(tag_list)}) pozycji 'Time' w 'Summary Panel' dla "
+            raise ValueError(f"Znaleziono nieprawidłową ilość ({len(tag_list)}) pozycji 'Budżet zadania' dla "
                              f"epika.\n {tag_list}")
 
         budget = 0
@@ -211,7 +216,6 @@ class Jira:
                 budget = int(sibling_tag.text.strip())
         return budget
 
-    # TODO: dodać testy jednostkowe
     def get_information_about_epic(self, content: str) -> tuple[str, str, float, float, float, float]:
         """ Pobranie informacji o epiku z Jiry
         Funkcja otrzymuje stronę z Jiry z informacjami o jednym epiku. Na podstawie otrzymanej zawartości funkcja
