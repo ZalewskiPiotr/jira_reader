@@ -132,7 +132,7 @@ def test_get_information_about_task_put_correct_task_get_correct_values():
     Jeżeli podane zostaną prawidłowe wartości o tasku z Jiry, to zwrócone zostaną prawidłowe informacje o czasach.
     """
     test_file_path = get_path_to_test_data('test_task', 'html')
-    with open(test_file_path, 'r') as task_file:
+    with open(test_file_path, 'r', encoding='UTF-8') as task_file:
         file_content = task_file.read()
     jira_obj = jira.Jira()
     estimated, remaining, logged = jira_obj.get_information_about_task(file_content)
@@ -146,7 +146,7 @@ def test_get_information_about_epic_put_correct_html_get_correct_values():
     Jeżeli podany zostanie prawidłowy HTML z danymi epika, to zwrócone zostaną prawidłowe wartości
     """
     test_file_path = get_path_to_test_data('test_epik', 'html')
-    with open(test_file_path, 'r') as task_file:
+    with open(test_file_path, 'r', encoding='UTF-8') as task_file:
         file_content = task_file.read()
     jira_obj = jira.Jira()
     name, key, budget, estimated, logged, remaining = jira_obj.get_information_about_epic(file_content)
