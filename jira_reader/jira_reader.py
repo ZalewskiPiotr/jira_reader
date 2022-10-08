@@ -68,7 +68,7 @@ class JiraReader:
         :type task_url: str
         :param username: Nazwa użytkownika, logującego się do Jiry
         :type username: str
-        :param password: Hasło logującego się użzytkownika
+        :param password: Hasło logującego się użytkownika
         :type password: str
         :return: ---
         :rtype: ---
