@@ -95,7 +95,6 @@ class Jira:
         :return: brak
         :rtype: ---
         """
-        self._selenium_driver = webdriver.Chrome()
         driver = webdriver.Chrome()
         driver.maximize_window()
         driver.get(login_page_url)
