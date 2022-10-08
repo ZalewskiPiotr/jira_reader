@@ -211,7 +211,6 @@ class Jira:
                 budget = int(sibling_tag.text.strip())
         return budget
 
-    # TODO: dodać testy jednostkowe
     def get_information_about_epic(self, content: str) -> tuple[str, str, float, float, float, float]:
         """ Pobranie informacji o epiku z Jiry
         Funkcja otrzymuje stronę z Jiry z informacjami o jednym epiku. Na podstawie otrzymanej zawartości funkcja
