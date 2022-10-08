@@ -50,7 +50,8 @@ class Jira:
         """
         Usunięcie webdrivera Selenium
         """
-        self._selenium_driver.quit()
+        if self._selenium_driver:
+            self._selenium_driver.quit()
 
     @staticmethod
     def convert_text_time_to_hours(text_time: str) -> float:
