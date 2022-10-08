@@ -186,7 +186,6 @@ class Jira:
 
         return spent, remaining, estimated
 
-    # TODO: dodać testy jednostkowe
     @classmethod
     def get_epic_budget(cls, tag_list: list[bs4.element.Tag]) -> int:
         """ Pobranie informacji o budżecie wskazanego epika
