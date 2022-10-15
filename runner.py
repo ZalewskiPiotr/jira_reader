@@ -16,6 +16,7 @@ Skrypt zawiera funkcje:
 """
 # Standard library imports
 import getpass
+import configparser
 
 # Third party imports
 
@@ -52,17 +53,27 @@ def get_data_for_connection_to_jira() -> tuple[str, str, str]:
     return url_for_task, name_of_user, passwd
 
 
+def get_configuration() -> list:
+    config = configparser.ConfigParser(allow_no_value=True)
+    files = config.read('config.ini')
+    if len(files) == 0:
+        raise FileNotFoundError(f"Nie znaleziono pliku konfiguracyjnego 'config.ini'")
+    return list(config['epics'])
+
+
 def main():
     """ Sterowanie przepływem programu
 
     Jest to główna funkcja, która steruje przepływem programu
     """
     show_program_metadata()
+    epic_list = get_configuration()
+
     jira_url, username, password = get_data_for_connection_to_jira()
     # TODO: pobrać od usera albo jakoś inaczej zmienną 'login.jsp'. Dodam taką pozycję do pliku konfiguracyjnego. Na razie zostaje na stałe
     reader_jira = jr.JiraReader(jira_url, 'login.jsp', username, password)
     # reader.show_task_report_in_console(task_url, username, password)
-    reader_jira.show_main_epic_data(['AEWO-1000', 'AA-294'])
+    reader_jira.show_main_epic_data(epic_list)
 
 
 if __name__ == '__main__':
