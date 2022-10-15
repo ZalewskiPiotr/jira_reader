@@ -11,11 +11,19 @@ Skrypt zawiera funkcje:
     Wyświetlenie metadanych programu
 - get_data_for_connection_to_jira() -> tuple[str, str, str]:
     Pobranie informacji o adresie url taska oraz danych do logowania do Jiry
+- get_configuration() -> list:
+    Pobranie konfiguracji programu z pliku 'ini'
+- get_root_folder() -> pathlib.Path:
+    Pobranie głównego katalogu programu
+- get_config_path() -> pathlib.Path:
+    Pobranie ścieżki do pliku konfiguracyjnego programu
 - main()
     Sterowanie przepływem programu
 """
 # Standard library imports
 import getpass
+import configparser
+import pathlib
 
 # Third party imports
 
@@ -52,17 +60,55 @@ def get_data_for_connection_to_jira() -> tuple[str, str, str]:
     return url_for_task, name_of_user, passwd
 
 
+def get_configuration() -> list:
+    """ Pobranie konfiguracji programu z pliku 'ini'
+
+    :return: Lista epików
+    :rtype: list
+    """
+    config_file_path = get_config_path()
+    config = configparser.ConfigParser(allow_no_value=True)
+    files = config.read(config_file_path)
+    if len(files) == 0:
+        raise FileNotFoundError(f"Nie znaleziono pliku konfiguracyjnego 'config.ini'")
+    return list(config['epics'])
+
+
+def get_root_folder() -> pathlib.Path:
+    """ Pobranie głównego katalogu programu
+
+    Funkcja pobiera główny katalog programu. Katalog jest identyfikowany jako ten, w którym jest uruchamiany plik
+    'runner.py'
+    :return: Ścieżka do głównego katalogu programu
+    :rtype: pathlib.Path
+    """
+    return pathlib.Path(__file__).resolve().parent
+
+
+def get_config_path() -> pathlib.Path:
+    """ Pobranie ścieżki do pliku konfiguracyjnego programu
+
+    :return: Ścieżka do pliku konfiguracyjnego
+    :rtype:  pathlib.Path
+    """
+    config_file_name = 'config.ini'
+    root_folder = get_root_folder()
+    return pathlib.Path.joinpath(root_folder, config_file_name)
+
+
 def main():
     """ Sterowanie przepływem programu
 
     Jest to główna funkcja, która steruje przepływem programu
     """
     show_program_metadata()
+    epic_list = get_configuration()
+
     jira_url, username, password = get_data_for_connection_to_jira()
     # TODO: pobrać od usera albo jakoś inaczej zmienną 'login.jsp'. Dodam taką pozycję do pliku konfiguracyjnego. Na razie zostaje na stałe
     reader_jira = jr.JiraReader(jira_url, 'login.jsp', username, password)
     # reader.show_task_report_in_console(task_url, username, password)
-    reader_jira.show_main_epic_data(['AEWO-1000', 'AA-294'])
+    reader_jira.show_main_epic_data(epic_list)
 
 
 if __name__ == '__main__':
