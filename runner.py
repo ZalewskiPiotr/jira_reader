@@ -11,12 +11,19 @@ Skrypt zawiera funkcje:
     Wyświetlenie metadanych programu
 - get_data_for_connection_to_jira() -> tuple[str, str, str]:
     Pobranie informacji o adresie url taska oraz danych do logowania do Jiry
+- get_configuration() -> list:
+    Pobranie konfiguracji programu z pliku 'ini'
+- get_root_folder() -> pathlib.Path:
+    Pobranie głównego katalogu programu
+- get_config_path() -> pathlib.Path:
+    Pobranie ścieżki do pliku konfiguracyjnego programu
 - main()
     Sterowanie przepływem programu
 """
 # Standard library imports
 import getpass
 import configparser
+import pathlib
 
 # Third party imports
 
@@ -54,11 +61,39 @@ def get_data_for_connection_to_jira() -> tuple[str, str, str]:
 
 
 def get_configuration() -> list:
+    """ Pobranie konfiguracji programu z pliku 'ini'
+
+    :return: Lista epików
+    :rtype: list
+    """
+    config_file_path = get_config_path()
     config = configparser.ConfigParser(allow_no_value=True)
-    files = config.read('config.ini')
+    files = config.read(config_file_path)
     if len(files) == 0:
         raise FileNotFoundError(f"Nie znaleziono pliku konfiguracyjnego 'config.ini'")
     return list(config['epics'])
+
+
+def get_root_folder() -> pathlib.Path:
+    """ Pobranie głównego katalogu programu
+
+    Funkcja pobiera główny katalog programu. Katalog jest identyfikowany jako ten, w którym jest uruchamiany plik
+    'runner.py'
+    :return: Ścieżka do głównego katalogu programu
+    :rtype: pathlib.Path
+    """
+    return pathlib.Path(__file__).resolve().parent
+
+
+def get_config_path() -> pathlib.Path:
+    """ Pobranie ścieżki do pliku konfiguracyjnego programu
+
+    :return: Ścieżka do pliku konfiguracyjnego
+    :rtype:  pathlib.Path
+    """
+    config_file_name = 'config.ini'
+    root_folder = get_root_folder()
+    return pathlib.Path.joinpath(root_folder, config_file_name)
 
 
 def main():
