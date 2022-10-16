@@ -1,6 +1,7 @@
 # Standard library imports
 
 # Third party imports
+from prettytable import PrettyTable
 
 # Local imports
 from jira_reader import jira
@@ -94,12 +95,19 @@ class JiraReader:
         jira_obj = jira.Jira()
         jira_obj.login_jira(self._login_url, self._username, self._password)
 
+        data_from_jira = []
         for epic_key in epic_key_list:
             epic_url = f"{self._jira_url}/browse/{epic_key}"
             page_content = jira_obj.get_page_content_selenium(epic_url)
             name, key, budget, estimated, logged, remaining = jira_obj.get_information_about_epic(page_content)
-            print(name, key, budget, estimated, logged, remaining)
+            data_from_jira.append([name, key, budget, estimated, logged, remaining])
 
+        self.print_table(data_from_jira)
         del jira_obj
 
-
+    @staticmethod
+    def print_table(data_to_show):
+        table = PrettyTable()
+        table.field_names = ["Nazwa", "Id", "Budżet", "Czas szacowany", "Czas zalogowany", "Czas pozostały"]
+        table.add_rows(data_to_show)
+        print(table)

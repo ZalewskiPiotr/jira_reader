@@ -53,6 +53,12 @@ Po pobraniu odpowiedniego pliku `zip`, należy go rozpakować i znajdujący się
 katalogu `scripts`. W przypadku, gdy Python został uruchomiony jako środowisko wirtualne w projekcie, to katalogiem do
 którego należy wgrać plik `.exe` jest `projekt/venv/scripts`.
 W wersji 1.1.0 obsługiwana jest tylko przeglądarka Chrome.
+#### prettytable
+Pakiet jest wykorzystywany do wyświetlania na konsoli raportu z pobranych informacji.
+```sh
+python -m pip install -U prettytable
+```
+
 #### Lista pakietów
 Prawidłowe środowisko deweloperskie powinno zawierać poniższą listę pakietów:
 ```sh
@@ -78,6 +84,7 @@ packaging                 21.3
 pefile                    2022.5.30
 pip                       22.1.2
 pluggy                    1.0.0
+prettytable               3.4.1
 py                        1.11.0
 pycparser                 2.21
 pyinstaller               5.1
@@ -97,6 +104,7 @@ tomli                     2.0.1
 trio                      0.21.0
 trio-websocket            0.9.2
 urllib3                   1.26.9
+wcwidth                   0.2.5
 wheel                     0.36.2
 wsproto                   1.1.0
 ```
