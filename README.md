@@ -113,13 +113,14 @@ wsproto                   1.1.0
 Do przygotowania wersji dystrybucyjnej programu potrzebny jest Pyinstaller oraz plik cli.py.
 Aby utworzyć wersję dystrybucyjną należy wykonać polecenie:
 ```sh
-pyinstaller cli.py --name jira_reader --add-data="config.ini;."
+pyinstaller cli.py --name jira_reader --add-data="config.ini;." --add-data=".\venv\scripts\chromedriver.exe;.\drivers"
 ```
 gdzie:
 - **pyinstaller** - nazwa modułu, który tworzy wersję dystrybucyjną programu
 - **cli.py** - nazwa skryptu, z informacjami dla pyinstaller-a
 - **--name jira_reader** - nazwa docelowa programu exe, który zostanie utworzony
 - **--add-data="config.ini;."** - dodanie pliku `config.ini` do katalogu głównego aplikacji
+- **--add-data=".\venv\scripts\chromedriver.exe;.\drivers"** - dodanie pliku `chromedriver.exe` do katalogu `drivers'
 
 Wersja dystrybucyjna tworzona jest w katalogu:
 > .\dist\jira_reader
