@@ -11,6 +11,8 @@ Skrypt zawiera funkcje:
     Wyświetlenie metadanych programu
 - get_data_for_connection_to_jira() -> tuple[str, str, str]:
     Pobranie informacji o adresie url taska oraz danych do logowania do Jiry
+- create_ini_file(config_path: pathlib.Path)
+    Utworzenie pliku konfiguracyjnego
 - get_configuration() -> list:
     Pobranie konfiguracji programu z pliku 'ini'
 - get_root_folder() -> pathlib.Path:
@@ -60,6 +62,23 @@ def get_data_for_connection_to_jira() -> tuple[str, str, str]:
     return url_for_task, name_of_user, passwd
 
 
+def create_ini_file(config_path: pathlib.Path):
+    """ Utworzenie pliku konfiguracyjnego
+
+    :param config_path: Ścieżka do pliku
+    :type config_path: pathlib.Path
+    :return: ---
+    :rtype: ---
+    """
+    config_parser = configparser.ConfigParser()
+    config_parser.add_section('epics')
+    with open(config_path, 'w') as config_file:
+        config_parser.write(config_file)
+    print(f"Został utworzony plik 'config.ini' w katalogu głównym aplikacji. Należy uzupełnić plik na podstawie "
+          f"instrukcji ze strony: "
+          f"https://github.com/ZalewskiPiotr/jira_reader/wiki/0.-Funkcjonalno%C5%9B%C4%87-programu#konfiguracja")
+
+
 def get_configuration() -> list:
     """ Pobranie konfiguracji programu z pliku 'ini'
 
@@ -67,6 +86,13 @@ def get_configuration() -> list:
     :rtype: list
     """
     config_file_path = get_config_path()
+
+    # Jak pliku nie ma to go zakładamy. Plik nie ma danych, więc wychodzimy z programu bo i tak nie będzie działał.
+    path_object = pathlib.Path(config_file_path)
+    if not path_object.exists():
+        create_ini_file(config_file_path)
+        exit(0)
+
     config = configparser.ConfigParser(allow_no_value=True)
     files = config.read(config_file_path)
     if len(files) == 0:
