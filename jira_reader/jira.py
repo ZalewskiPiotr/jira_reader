@@ -72,14 +72,13 @@ class Jira:
         time_list_values = text_time.split()
         days = 0
         hours = 0
-        for time in time_list_values:
-            if 'd' in time:
-                days = float(time[0:time.find('d')])
-            if 'h' in time:
-                hours = float(time[0:time.find('h')])
+        for one_time in time_list_values:
+            if 'd' in one_time:
+                days = float(one_time[0:one_time.find('d')])
+            if 'h' in one_time:
+                hours = float(one_time[0:one_time.find('h')])
         total_time = days * 8 + hours
         return total_time
-
 
     def login_jira(self, login_page_url: str, user: str, password: str):
         """ Logowanie do Jiry
