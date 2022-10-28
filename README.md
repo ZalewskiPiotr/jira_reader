@@ -53,65 +53,99 @@ Po pobraniu odpowiedniego pliku `zip`, należy go rozpakować i znajdujący się
 katalogu `scripts`. W przypadku, gdy Python został uruchomiony jako środowisko wirtualne w projekcie, to katalogiem do
 którego należy wgrać plik `.exe` jest `projekt/venv/scripts`.
 W wersji 1.1.0 obsługiwana jest tylko przeglądarka Chrome.
+!!! UWAGA !!!
+Powyższy ręczny mechanizm instalacji webdrivera został zastąpiony przez pakiet `chromedriver-autoinstaller`.
 #### prettytable
 Pakiet jest wykorzystywany do wyświetlania na konsoli raportu z pobranych informacji.
 ```sh
 python -m pip install -U prettytable
 ```
 
+#### chromedriver-autoinstaller
+Pakiet jest wykorzystywany do automatycznej instalacji webdrivera Chrome. Na środowisku deweloperskim webdriver jest
+instalowany w katalogu `\jira_reader\venv\Lib\site-packages\chromedriver_autoinstaller`
+```sh
+pip install chromedriver-autoinstaller
+```
+
 #### Lista pakietów
 Prawidłowe środowisko deweloperskie powinno zawierać poniższą listę pakietów:
 ```sh
-Package                   Version
-------------------------- -----------
-altgraph                  0.17.2
-async-generator           1.10
-atomicwrites              1.4.0
-attrs                     21.4.0
-beautifulsoup4            4.11.1
-certifi                   2022.5.18.1
-cffi                      1.15.1
-charset-normalizer        2.0.12
-colorama                  0.4.4
-cryptography              37.0.4
-future                    0.18.2
-h11                       0.13.0
-idna                      3.3
-iniconfig                 1.1.1
-lxml                      4.9.0
-outcome                   1.2.0
-packaging                 21.3
-pefile                    2022.5.30
-pip                       22.1.2
-pluggy                    1.0.0
-prettytable               3.4.1
-py                        1.11.0
-pycparser                 2.21
-pyinstaller               5.1
-pyinstaller-hooks-contrib 2022.7
-pyOpenSSL                 22.0.0
-pyparsing                 3.0.9
-PySocks                   1.7.1
-pytest                    7.1.2
-pywin32-ctypes            0.2.0
-requests                  2.28.0
-selenium                  4.4.0
-setuptools                57.0.0
-sniffio                   1.2.0
-sortedcontainers          2.4.0
-soupsieve                 2.3.2.post1
-tomli                     2.0.1
-trio                      0.21.0
-trio-websocket            0.9.2
-urllib3                   1.26.9
-wcwidth                   0.2.5
-wheel                     0.36.2
-wsproto                   1.1.0
+Package                    Version
+-------------------------- -----------
+altgraph                   0.17.2
+async-generator            1.10
+atomicwrites               1.4.0
+attrs                      21.4.0
+beautifulsoup4             4.11.1
+certifi                    2022.5.18.1
+cffi                       1.15.1
+charset-normalizer         2.0.12
+chromedriver-autoinstaller 0.4.0
+colorama                   0.4.4
+cryptography               37.0.4
+future                     0.18.2
+h11                        0.13.0
+idna                       3.3
+iniconfig                  1.1.1
+lxml                       4.9.0
+outcome                    1.2.0
+packaging                  21.3
+pefile                     2022.5.30
+pip                        22.1.2
+pluggy                     1.0.0
+prettytable                3.4.1
+py                         1.11.0
+pycparser                  2.21
+pyinstaller                5.1
+pyinstaller-hooks-contrib  2022.7
+pyOpenSSL                  22.0.0
+pyparsing                  3.0.9
+PySocks                    1.7.1
+pytest                     7.1.2
+pywin32-ctypes             0.2.0
+requests                   2.28.0
+selenium                   4.4.0
+setuptools                 57.0.0
+sniffio                    1.2.0
+sortedcontainers           2.4.0
+soupsieve                  2.3.2.post1
+tomli                      2.0.1
+trio                       0.21.0
+trio-websocket             0.9.2
+urllib3                    1.26.9
+wcwidth                    0.2.5
+wheel                      0.36.2
+wsproto                    1.1.0
 ```
 
 ## Przygotowanie wersji dystrybucyjnej programu
 Do przygotowania wersji dystrybucyjnej programu potrzebny jest Pyinstaller oraz plik cli.py.
-Aby utworzyć wersję dystrybucyjną należy wykonać polecenie:
+Aby utworzyć wersję dystrybucyjną należy wykonać poniższe polecenie. W takim przypadku do wersji instalacyjnej nie 
+zostanie dodany plik konfiguracyjny. Program przy pierwszym uruchomieniu utworzy taki plik z odpowiednią strukturą.
+Jest to zalecany sposób przygotowania wersji dystrybucyjnej. 
+```sh
+pyinstaller cli.py --name jira_reader 
+```
+gdzie:
+- **pyinstaller** - nazwa modułu, który tworzy wersję dystrybucyjną programu
+- **cli.py** - nazwa skryptu, z informacjami dla pyinstaller-a
+- **--name jira_reader** - nazwa docelowa programu exe, który zostanie utworzony
+
+Wersję instalacyjną można także przygotować poniższym poleceniem. Wówczas zostanie dodany deweloperski plik config.ini.
+Wykorzystanie tego polecenia nie jest zalecane.
+```sh
+pyinstaller cli.py --name jira_reader --add-data="config.ini;." --add-data=".\venv\scripts\chromedriver.exe;.\drivers"
+```
+gdzie:
+- **pyinstaller** - nazwa modułu, który tworzy wersję dystrybucyjną programu
+- **cli.py** - nazwa skryptu, z informacjami dla pyinstaller-a
+- **--name jira_reader** - nazwa docelowa programu exe, który zostanie utworzony
+- **--add-data="config.ini;."** - dodanie pliku `config.ini` do katalogu głównego aplikacji
+- **--add-data=".\venv\scripts\chromedriver.exe;.\drivers"** - dodanie pliku `chromedriver.exe` do katalogu `drivers'
+
+Przed dodaniem pakietu `chromedriver-autoinstaller` było wykorzystywane poniższe polecenie, które dodatkowo umieszczało
+w wersji dystrybucyjnej plik webrivera Chrome.
 ```sh
 pyinstaller cli.py --name jira_reader --add-data="config.ini;." --add-data=".\venv\scripts\chromedriver.exe;.\drivers"
 ```

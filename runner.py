@@ -29,6 +29,7 @@ import pathlib
 import sys
 
 # Third party imports
+import chromedriver_autoinstaller
 
 # Local imports
 import jira_reader
@@ -129,6 +130,12 @@ def main():
     Jest to główna funkcja, która steruje przepływem programu
     """
     show_program_metadata()
+
+    # Instalacja chrome driver
+    chrome_driver_path = chromedriver_autoinstaller.install()
+    if chrome_driver_path:
+        print(f"Zainstalowano sterownik przeglądarki Chrome w katalogu {chrome_driver_path}")
+
     epic_list = get_configuration()
 
     jira_url, username, password = get_data_for_connection_to_jira()
