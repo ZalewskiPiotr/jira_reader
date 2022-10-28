@@ -26,6 +26,7 @@ Skrypt zawiera funkcje:
 import getpass
 import configparser
 import pathlib
+import sys
 
 # Third party imports
 
@@ -91,7 +92,7 @@ def get_configuration() -> list:
     path_object = pathlib.Path(config_file_path)
     if not path_object.exists():
         create_ini_file(config_file_path)
-        exit(0)
+        sys.exit(0)
 
     config = configparser.ConfigParser(allow_no_value=True)
     files = config.read(config_file_path)
