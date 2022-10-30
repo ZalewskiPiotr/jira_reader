@@ -4,7 +4,7 @@
 Program odczytuje informacje z aplikacji Jira, poprzez wywoływanie odpowiednich stron www. Z odczytanych informacji
 budowane są raporty i wyświetlane użytkownikowi
 
-_Więcej informacji znajduje się w [Wikipedii projektu][wiki]._
+_Dokumentacja znajduje się w [Wikipedii projektu][wiki]._
 
 ## Instalacja
 Należy pobrać wersję dystrybucyjną programu i skopiować w dowolne miejsce na dysku. 
@@ -162,11 +162,8 @@ Wersja dystrybucyjna tworzona jest w katalogu:
 
 ## Historia zmian
 
-* 1.1.0
-  * ...
-* 1.0.0
-    * Odczytanie i wyświetlenie informacji o jednym wskazanym tasku z Jiry. Pobierane informacje to: czas planowany,
-  czas zalogowany, czas pozostały.
+* [1.1.0][v1.1.0]
+* [1.0.0][v1.0.0]
 
 ## Licencja
 
@@ -183,3 +180,5 @@ Program jest rozpowszechniany na podstawie licencji ``GNU GPL``
 [python-version]: https://www.python.org/downloads/release/python-3104/
 [chromium-driver]: https://chromedriver.chromium.org/downloads
 [mail]: mailto:1piotrzalewski@gmail.com
+[v1.0.0]: https://github.com/ZalewskiPiotr/jira_reader/wiki/1.-Wersja-1.0.0
+[v1.1.0]: https://github.com/ZalewskiPiotr/jira_reader/wiki/2.-Wersja-1.1.0
