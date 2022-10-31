@@ -1,4 +1,5 @@
 # Standard library imports
+import traceback
 
 # Third party imports
 from prettytable import PrettyTable
@@ -97,10 +98,15 @@ class JiraReader:
 
         data_from_jira = []
         for epic_key in epic_key_list:
-            epic_url = f"{self._jira_url}/browse/{epic_key}"
-            page_content = jira_obj.get_page_content_selenium(epic_url)
-            name, key, budget, estimated, logged, remaining = jira_obj.get_information_about_epic(page_content)
-            data_from_jira.append([name, key, budget, estimated, logged, remaining])
+            try:
+                epic_url = f"{self._jira_url}/browse/{epic_key}"
+                page_content = jira_obj.get_page_content_selenium(epic_url)
+                name, key, budget, estimated, logged, remaining = jira_obj.get_information_about_epic(page_content)
+                data_from_jira.append([name, key, budget, estimated, logged, remaining])
+            except Exception as error:
+                print(f"---------- Błąd dla epika: {str(epic_key).upper()} ----------")
+                traceback.print_exception(error)
+                print()
 
         self.print_table(data_from_jira)
         del jira_obj
