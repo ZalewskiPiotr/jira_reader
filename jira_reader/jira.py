@@ -33,7 +33,7 @@ class Jira:
         Pobranie informacji o jednym tasku z Jiry
     - get_times(cls, tag_list: list[bs4.element.Tag]) -> tuple[float, float, float]:
         Pobranie informacji o sumarycznych czasach w epiku
-    - get_epic_budget(cls, tag_list: list[bs4.element.Tag]) -> int:
+    - get_epic_budget(cls, tag_list: list[bs4.element.Tag]) -> float:
         obranie informacji o budżecie wskazanego epika
     - get_information_about_epic(self, content: str) -> tuple[str, str, float, float, float, float]:
         Pobranie informacji o epiku z Jiry
@@ -192,7 +192,7 @@ class Jira:
         return spent, remaining, estimated
 
     @classmethod
-    def get_epic_budget(cls, tag_list: list[bs4.element.Tag]) -> int:
+    def get_epic_budget(cls, tag_list: list[bs4.element.Tag]) -> float:
         """ Pobranie informacji o budżecie wskazanego epika
 
         Funkcja pobiera z przekazanego epika informację o budżecie.
@@ -201,7 +201,7 @@ class Jira:
         ma ustawionego budżetu
         :type tag_list: list[bs4.element.Tag]
         :return: budżet w formie ilości dni
-        :rtype: int
+        :rtype: float
         """
         if tag_list is None or len(tag_list) == 0:
             return 0
@@ -212,7 +212,7 @@ class Jira:
         budget = 0
         for sibling_tag in tag_list[0].next_siblings:
             if sibling_tag.name == 'div':
-                budget = int(sibling_tag.text.strip())
+                budget = float(sibling_tag.text.strip())
         return budget
 
     def get_information_about_epic(self, content: str) -> tuple[str, str, float, float, float, float]:
