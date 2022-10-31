@@ -39,6 +39,9 @@ Funkcje:
     Jeżeli podany zostanie html bez wartości budżetu to zwrócona zostanie wartość 0
 - test_get_epic_budget_put_html_with_many_budgets_get_error()
     Jeżeli podany zostanie html z kilkoma wartościami budżetu, to zwrócony zostanie wyjątek
+- test_get_epic_budget_put_html_with_float_budget_get_budget_value()
+    Jeżeli podany zostanie html z wartością budżetu w postaci liczby z przecinkiem to zwrócona zostanie wartość tego
+    budżetu
 
 Wyjątki (exceptions):
 ---------------------
@@ -253,3 +256,19 @@ def test_get_epic_budget_put_html_with_many_budgets_get_error():
     with pytest.raises(ValueError):
         epic_budget = jira.Jira.get_epic_budget(budget_tag_list)
 
+
+def test_get_epic_budget_put_html_with_float_budget_get_budget_value():
+    """
+    Jeżeli podany zostanie html z wartością budżetu w postaci liczby z przecinkiem to zwrócona zostanie wartość tego
+    budżetu
+    """
+    html ='<li id="rowForcustomfield_12300" class="item"> ' \
+          '<div class="wrap"><strong title="Budżet zadania" class="name">Budżet zadania:</strong>' \
+          '<div id="customfield_12300-val" class="value type-float editable-field inactive" data-fieldtype="float" ' \
+          'data-fieldtypecompletekey="com.atlassian.jira.plugin.system.customfieldtypes:float"' \
+          'title="Click to edit">5.6<span class="overlay-icon aui-icon aui-icon-small aui-iconfont-edit"></span></div>' \
+          '</div></li>'
+    soup = BeautifulSoup(html, 'html.parser')
+    budget_tag_list = soup.find_all('strong', title='Budżet zadania')
+    epic_budget = jira.Jira.get_epic_budget(budget_tag_list)
+    assert epic_budget == 5.6
