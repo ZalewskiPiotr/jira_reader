@@ -25,8 +25,14 @@ class JiraReader:
         Inicjalizacja klasy
     - show_task_report_in_console(self, task_url: str, username: str, password: str):
         Sterowanie procesem zbudowania raportu dla jednego taska z Jiry
-    - def show_main_epic_data(self, epic_key_list: list):
+    - show_main_epic_data(self, epic_key_list: list):
         Pobranie i wyświetlenie podstawowych informacji o epikach
+    - print_table(data_to_show: list):
+        Wyświetlenie raportu na ekranie
+    - calculate_budget_usage(budget: float, logged_time: float) -> float:
+        Wyliczenie użycia budżetu
+    - convert_number_to_string_with_percent
+        Dodanie znaku procentu do liczby
     """
 
     def __init__(self, jira_url: str, login_page: str, username: str, password: str):
@@ -102,7 +108,8 @@ class JiraReader:
                 epic_url = f"{self._jira_url}/browse/{epic_key}"
                 page_content = jira_obj.get_page_content_selenium(epic_url)
                 name, key, budget, estimated, logged, remaining = jira_obj.get_information_about_epic(page_content)
-                data_from_jira.append([name, key, budget, estimated, logged, remaining])
+                budget_usage = self.convert_number_to_string_with_percent(self.calculate_budget_usage(budget, logged))
+                data_from_jira.append([name, key, budget, estimated, logged, remaining, budget_usage])
             except Exception as error:
                 print(f"---------- Błąd dla epika: {str(epic_key).upper()} ----------")
                 traceback.print_exception(error)
@@ -112,8 +119,49 @@ class JiraReader:
         del jira_obj
 
     @staticmethod
-    def print_table(data_to_show):
+    def print_table(data_to_show: list):
+        """ Wyświetlenie raportu na ekranie
+
+        Metoda wyświetla raport z odczytancyh danych na ekranie monitora.
+
+        :param data_to_show: Dane w postaci listy do wyświetlenia
+        :type data_to_show: list
+        :return: ---
+        :rtype: ---
+        """
         table = PrettyTable()
-        table.field_names = ["Nazwa", "Id", "Budżet", "Czas szacowany", "Czas zalogowany", "Czas pozostały"]
+        table.field_names = ["Nazwa", "Id", "Budżet", "Czas szacowany", "Czas zalogowany", "Czas pozostały",
+                             "Użycie budżetu"]
         table.add_rows(data_to_show)
         print(table)
+
+    @staticmethod
+    def calculate_budget_usage(budget: float, logged_time: float) -> float:
+        # TODO: trzeba dodać testy jednostkowe tej funkcji
+        """ Wyliczenie użycia budżetu
+
+        Metoda na podstawie podanego budżetu i zalogowanego czasu wylicza procent użycia budżetu
+
+        :param budget: Budżet zadania
+        :type budget: float
+        :param logged_time: Zalogowany czas
+        :type logged_time: float
+        :return: Użycie budżetu podane w wartości procentowej
+        :rtype: float
+        """
+        if budget > 0:
+            budget_usage = ((logged_time / 8) / budget) * 100
+            return round(budget_usage, 2)
+        else:
+            return 0
+
+    @staticmethod
+    def convert_number_to_string_with_percent(number: float) -> str:
+        """ Dodanie znaku procentu do liczby
+
+        :param number: Liczba
+        :type number: float
+        :return: Liczba z dodanym procentem
+        :rtype: str
+        """
+        return f"{str(number)} %"
