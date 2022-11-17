@@ -144,7 +144,7 @@ class JiraReader:
 
         :param budget: Budżet zadania
         :type budget: float
-        :param logged_time: Zalogowany czas
+        :param logged_time: Zalogowany czas w godzinach
         :type logged_time: float
         :return: Użycie budżetu podane w wartości procentowej
         :rtype: float
