@@ -137,7 +137,6 @@ class JiraReader:
 
     @staticmethod
     def calculate_budget_usage(budget: float, logged_time: float) -> float:
-        # TODO: trzeba dodać testy jednostkowe tej funkcji
         """ Wyliczenie użycia budżetu
 
         Metoda na podstawie podanego budżetu i zalogowanego czasu wylicza procent użycia budżetu

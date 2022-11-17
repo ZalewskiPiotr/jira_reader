@@ -13,6 +13,10 @@ Funkcje:
     Jeżeli zostanie podana pusta nazwa użytkownika to powinien zostać zwrócony wyjątek ValueError
 - test_init_if_put_empty_password_get_error():
      Jeżeli zostanie podane puste hasło to powinien zostać zwrócony wyjątek ValueError
+- test_calculate_budget_usage_put_correct_data_get_budget_usage_value():
+    Jeżeli podane zostały prawidłowe wartości, to powinna zostać zwrócona wartość zużycia budżetu
+- test_calculate_budget_usage_divide_by_zero():
+    Jeżeli budżet wynosi 0, to metoda zwróci także 0
 
 Wyjątki (exceptions):
 ---------------------
@@ -40,7 +44,7 @@ def test_init_if_put_empty_jira_url_get_error():
 
 def test_init_if_put_empty_user_get_error():
     """
-        Jeżeli zostanie podana pusta nazwa użytkownika to powinien zostać zwrócony wyjątek ValueError
+    Jeżeli zostanie podana pusta nazwa użytkownika to powinien zostać zwrócony wyjątek ValueError
     """
     url = 'http://www.adres.com'
     login_page = 'login.jsp'
@@ -53,7 +57,7 @@ def test_init_if_put_empty_user_get_error():
 
 def test_init_if_put_empty_password_get_error():
     """
-        Jeżeli zostanie podane puste hasło to powinien zostać zwrócony wyjątek ValueError
+    Jeżeli zostanie podane puste hasło to powinien zostać zwrócony wyjątek ValueError
     """
     url = 'http://www.adres.com'
     login_page = 'login.jsp'
@@ -66,7 +70,7 @@ def test_init_if_put_empty_password_get_error():
 
 def test_init_if_put_empty_login_page_get_error():
     """
-        Jeżeli zostanie podany pusty adres strony logowania to powinien zostać zwrócony wyjątek ValueError
+    Jeżeli zostanie podany pusty adres strony logowania to powinien zostać zwrócony wyjątek ValueError
     """
     url = 'http://www.adres.com'
     login_page = ' '
@@ -75,3 +79,25 @@ def test_init_if_put_empty_login_page_get_error():
 
     with pytest.raises(ValueError):
         jr.JiraReader(url, login_page, user, password)
+
+
+def test_calculate_budget_usage_put_correct_data_get_budget_usage_value():
+    """
+    Jeżeli podane zostały prawidłowe wartości, to powinna zostać zwrócona wartość zużycia budżetu
+    """
+    budget = 10             # Podać dni
+    logged_time = 5 * 8     # Podać godziny
+
+    budget_usage = jr.JiraReader.calculate_budget_usage(budget, logged_time)
+    assert budget_usage == 50
+
+
+def test_calculate_budget_usage_divide_by_zero():
+    """
+    Jeżeli budżet wynosi 0, to metoda zwróci także 0
+    """
+    budget = 0
+    logged_time = 25
+
+    budget_usage = jr.JiraReader.calculate_budget_usage(budget, logged_time)
+    assert budget_usage == 0
