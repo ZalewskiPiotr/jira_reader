@@ -142,7 +142,7 @@ class JiraReader:
 
         Metoda na podstawie podanego budżetu i zalogowanego czasu wylicza procent użycia budżetu
 
-        :param budget: Budżet zadania
+        :param budget: Budżet zadania w dniach
         :type budget: float
         :param logged_time: Zalogowany czas w godzinach
         :type logged_time: float
