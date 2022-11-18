@@ -31,7 +31,7 @@ class JiraReader:
         Wyświetlenie raportu na ekranie
     - calculate_budget_usage(budget: float, logged_time: float) -> float:
         Wyliczenie użycia budżetu
-    - convert_number_to_string_with_percent
+    - convert_number_to_string_with_percent(number: float) -> str:
         Dodanie znaku procentu do liczby
     """
 
