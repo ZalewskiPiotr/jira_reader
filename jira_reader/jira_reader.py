@@ -31,8 +31,10 @@ class JiraReader:
         Wyświetlenie raportu na ekranie
     - calculate_budget_usage(budget: float, logged_time: float) -> float:
         Wyliczenie użycia budżetu
-    - convert_number_to_string_with_percent
+    - convert_number_to_string_with_percent(number: float) -> str:
         Dodanie znaku procentu do liczby
+    - get_estimated_budget(budget: float, logged: float, remaining: float) -> float:
+        Wyliczenie przewidywanego zużycia budżetu
     """
 
     def __init__(self, jira_url: str, login_page: str, username: str, password: str):
@@ -109,7 +111,9 @@ class JiraReader:
                 page_content = jira_obj.get_page_content_selenium(epic_url)
                 name, key, budget, estimated, logged, remaining = jira_obj.get_information_about_epic(page_content)
                 budget_usage = self.convert_number_to_string_with_percent(self.calculate_budget_usage(budget, logged))
-                data_from_jira.append([name, key, budget, estimated, logged, remaining, budget_usage])
+                budget_etimated = self.convert_number_to_string_with_percent(
+                    self.get_estimated_budget(budget, logged, remaining))
+                data_from_jira.append([name, key, budget, estimated, logged, remaining, budget_usage, budget_etimated])
             except Exception as error:
                 print(f"---------- Błąd dla epika: {str(epic_key).upper()} ----------")
                 traceback.print_exception(error)
@@ -131,7 +135,7 @@ class JiraReader:
         """
         table = PrettyTable()
         table.field_names = ["Nazwa", "Id", "Budżet", "Czas szacowany", "Czas zalogowany", "Czas pozostały",
-                             "Użycie budżetu"]
+                             "Bieżące użycie budżetu", "Szacunkowe wykorzystanie budżetu"]
         table.add_rows(data_to_show)
         print(table)
 
@@ -164,3 +168,25 @@ class JiraReader:
         :rtype: str
         """
         return f"{str(number)} %"
+
+    @staticmethod
+    def get_estimated_budget(budget: float, logged: float, remaining: float) -> float:
+        """ Wyliczenie przewidywanego zużycia budżetu
+
+        Metoda na podstawia zalogowanego czasu i czasu, który pozostał do zakończenia zadania wylicza przewidywane
+        procentowe zużycie budżetu zadania
+
+        :param budget: Budżet zadania w dniach
+        :type budget: float
+        :param logged: Zalogowany czas w godzinach
+        :type logged: float
+        :param remaining: Przewidywany pozostały czas w godzinach
+        :type remaining: float
+        :return: Przewidywane zużycie budżetu w procentach
+        :rtype: float
+        """
+        if budget > 0:
+            estimated_budget = (((logged + remaining) / 8) / budget) * 100
+            return round(estimated_budget, 2)
+        else:
+            return 0
