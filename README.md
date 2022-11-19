@@ -162,6 +162,8 @@ Wersja dystrybucyjna tworzona jest w katalogu:
 
 ## Historia zmian
 
+* [1.2.0][v1.2.0]
+* [1.1.1][v1.1.1]
 * [1.1.0][v1.1.0]
 * [1.0.0][v1.0.0]
 
@@ -182,3 +184,5 @@ Program jest rozpowszechniany na podstawie licencji ``GNU GPL``
 [mail]: mailto:1piotrzalewski@gmail.com
 [v1.0.0]: https://github.com/ZalewskiPiotr/jira_reader/wiki/1.-Wersja-1.0.0
 [v1.1.0]: https://github.com/ZalewskiPiotr/jira_reader/wiki/2.-Wersja-1.1.0
+[v1.1.1]: https://github.com/ZalewskiPiotr/jira_reader/wiki/3.-Wersja-1.1.1
+[v1.2.0]: https://github.com/ZalewskiPiotr/jira_reader/wiki/4.-Wersja-1.2.0
