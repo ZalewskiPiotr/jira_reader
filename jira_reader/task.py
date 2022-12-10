@@ -17,7 +17,7 @@ class Task(Issue):
 
     @property
     def sum_remaining(self) -> float:
-        return  self._sum_remaining
+        return self._sum_remaining
 
     @property
     def sum_spent(self) -> float:
