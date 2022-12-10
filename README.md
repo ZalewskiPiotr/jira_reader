@@ -135,14 +135,13 @@ gdzie:
 Wersję instalacyjną można także przygotować poniższym poleceniem. Wówczas zostanie dodany deweloperski plik config.ini.
 Wykorzystanie tego polecenia nie jest zalecane.
 ```sh
-pyinstaller cli.py --name jira_reader --add-data="config.ini;." --add-data=".\venv\scripts\chromedriver.exe;.\drivers"
+pyinstaller cli.py --name jira_reader --add-data="config.ini;."
 ```
 gdzie:
 - **pyinstaller** - nazwa modułu, który tworzy wersję dystrybucyjną programu
 - **cli.py** - nazwa skryptu, z informacjami dla pyinstaller-a
 - **--name jira_reader** - nazwa docelowa programu exe, który zostanie utworzony
 - **--add-data="config.ini;."** - dodanie pliku `config.ini` do katalogu głównego aplikacji
-- **--add-data=".\venv\scripts\chromedriver.exe;.\drivers"** - dodanie pliku `chromedriver.exe` do katalogu `drivers'
 
 Przed dodaniem pakietu `chromedriver-autoinstaller` było wykorzystywane poniższe polecenie, które dodatkowo umieszczało
 w wersji dystrybucyjnej plik webrivera Chrome.
