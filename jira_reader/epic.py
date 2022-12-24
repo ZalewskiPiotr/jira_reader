@@ -56,7 +56,7 @@ class Epic(Issue):
         :return: Pierwotnie planowany czas
         :rtype: float
         """
-        return self.time_estimated
+        return self._time_estimated
 
     @property
     def time_remaining(self) -> float:
