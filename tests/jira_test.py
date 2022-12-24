@@ -152,13 +152,15 @@ def test_get_information_about_epic_put_correct_html_get_correct_values():
     with open(test_file_path, 'r', encoding='UTF-8') as task_file:
         file_content = task_file.read()
     jira_obj = jira.Jira()
-    name, key, budget, estimated, logged, remaining = jira_obj.get_information_about_epic(file_content)
-    assert name == "WO E4 DW W5"
-    assert key == "AEWO-1000"
-    assert budget == 5
-    assert estimated == 40.0
-    assert logged == 43.5
-    assert remaining == 0.0
+    # name, key, budget, estimated, logged, remaining = jira_obj.get_information_about_epic(file_content)
+    epic = jira_obj.get_information_about_epic(file_content)
+
+    assert epic.name == "WO E4 DW W5"
+    assert epic.key == "AEWO-1000"
+    assert epic.budget == 5
+    assert epic.time_estimated == 40.0
+    assert epic.time_spent == 43.5
+    assert epic.time_remaining == 0.0
 
 
 def test_get_times_put_none_tag_get_error():

@@ -6,6 +6,7 @@ from prettytable import PrettyTable
 
 # Local imports
 from jira_reader import jira
+from jira_reader.epic import Epic
 
 
 class JiraReader:
@@ -109,11 +110,15 @@ class JiraReader:
             try:
                 epic_url = f"{self._jira_url}/browse/{epic_key}"
                 page_content = jira_obj.get_page_content_selenium(epic_url)
-                name, key, budget, estimated, logged, remaining = jira_obj.get_information_about_epic(page_content)
-                budget_usage = self.convert_number_to_string_with_percent(self.calculate_budget_usage(budget, logged))
+                epic = jira_obj.get_information_about_epic(page_content)
+                # TODO: budget_usage i budget_etimated powinny znaleźć się jako atrybuty klasy Epic. Funnkcje, które
+                # wyliczają wartości tych zmiennych powinny być jako metody klasy Epic
+                budget_usage = self.convert_number_to_string_with_percent(
+                    self.calculate_budget_usage(epic.budget, epic.time_spent))
                 budget_etimated = self.convert_number_to_string_with_percent(
-                    self.get_estimated_budget(budget, logged, remaining))
-                data_from_jira.append([name, key, budget, estimated, logged, remaining, budget_usage, budget_etimated])
+                    self.get_estimated_budget(epic.budget, epic.time_spent, epic.time_remaining))
+                data_from_jira.append([epic.name, epic.key, epic.budget, epic.time_estimated, epic.time_spent,
+                                       epic.time_remaining, budget_usage, budget_etimated])
             except Exception as error:
                 print(f"---------- Błąd dla epika: {str(epic_key).upper()} ----------")
                 traceback.print_exception(error)
