@@ -1,6 +1,6 @@
 # TODO: dodać testy jednostkowe
 # Local imports
-from issue import Issue
+from jira_reader.issue import Issue
 
 
 class Task(Issue):
