@@ -14,6 +14,10 @@ Funkcje:
     Jeżeli podane zostały prawidłowe wartości, to powinna zostać zwrócona wartość zużycia budżetu
 - test_calculate_budget_usage_divide_by_zero()
     Jeżeli budżet wynosi 0, to metoda zwróci także 0
+- test_calculate_estimated_budget_usage_put_correct_data_get_budget_usage_value()
+    Jeżeli podane zostały prawidłowe wartości, to powinna zostać zwrócona przewidywana wartość zużycia budżetu
+- test_calculate_estimated_budget_usage_divide_by_zero
+    Jeżeli budżet wynosi 0, to metoda zwróci także 0
 
 Wyjątki (exceptions):
 ---------------------
@@ -58,5 +62,32 @@ def test_calculate_budget_usage_divide_by_zero():
 
     issue = Issue('testowe issue', 'testowy key')
     issue._calculate_budget_usage(budget=budget, logged_time=logged_time)
+
+    assert issue.budget_usage == 0
+
+
+def test_calculate_estimated_budget_usage_put_correct_data_get_budget_usage_value():
+    """
+    Jeżeli podane zostały prawidłowe wartości, to powinna zostać zwrócona przewidywana wartość zużycia budżetu
+    """
+    budget = 10             # Podać dni
+    logged_time = 5 * 8     # Podać godziny
+    remaining_time = 80     # Podać godziny
+
+    issue = Issue('testowe issue', 'testowy key')
+    issue._calculate_estimated_budget_usage(budget=budget, logged_time=logged_time, remaining_time=remaining_time)
+    assert issue.estimated_budget_usage == 150
+
+
+def test_calculate_estimated_budget_usage_divide_by_zero():
+    """
+    Jeżeli budżet wynosi 0, to metoda zwróci także 0
+    """
+    budget = 10  # Podać dni
+    logged_time = 5 * 8  # Podać godziny
+    remaining_time = 80  # Podać godziny
+
+    issue = Issue('testowe issue', 'testowy key')
+    issue._calculate_estimated_budget_usage(budget=budget, logged_time=logged_time, remaining_time=remaining_time)
 
     assert issue.budget_usage == 0

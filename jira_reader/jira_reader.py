@@ -111,13 +111,10 @@ class JiraReader:
                 epic_url = f"{self._jira_url}/browse/{epic_key}"
                 page_content = jira_obj.get_page_content_selenium(epic_url)
                 epic = jira_obj.get_information_about_epic(page_content)
-                # TODO: budget_etimated powinien znaleźć się jako atrybut klasy Epic. Funkcja, która wyliczaja wartość
-                #  tej zmiennej powinna być jako metoda klasy Epic
                 budget_usage = self.convert_number_to_string_with_percent(epic.budget_usage)
-                budget_etimated = self.convert_number_to_string_with_percent(
-                    self.get_estimated_budget(epic.budget, epic.time_spent, epic.time_remaining))
+                budget_estimated = self.convert_number_to_string_with_percent(epic.estimated_budget_usage)
                 data_from_jira.append([epic.name, epic.key, epic.budget, epic.time_estimated, epic.time_spent,
-                                       epic.time_remaining, budget_usage, budget_etimated])
+                                       epic.time_remaining, budget_usage, budget_estimated])
             except Exception as error:
                 print(f"---------- Błąd dla epika: {str(epic_key).upper()} ----------")
                 traceback.print_exception(error)
@@ -154,24 +151,3 @@ class JiraReader:
         """
         return f"{str(number)} %"
 
-    @staticmethod
-    def get_estimated_budget(budget: float, logged: float, remaining: float) -> float:
-        """ Wyliczenie przewidywanego zużycia budżetu
-
-        Metoda na podstawia zalogowanego czasu i czasu, który pozostał do zakończenia zadania wylicza przewidywane
-        procentowe zużycie budżetu zadania
-
-        :param budget: Budżet zadania w dniach
-        :type budget: float
-        :param logged: Zalogowany czas w godzinach
-        :type logged: float
-        :param remaining: Przewidywany pozostały czas w godzinach
-        :type remaining: float
-        :return: Przewidywane zużycie budżetu w procentach
-        :rtype: float
-        """
-        if budget > 0:
-            estimated_budget = (((logged + remaining) / 8) / budget) * 100
-            return round(estimated_budget, 2)
-        else:
-            return 0

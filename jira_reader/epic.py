@@ -47,6 +47,7 @@ class Epic(Issue):
         self._time_spent: float = spent
         self._budget: float = budget
         super()._calculate_budget_usage(budget=budget, logged_time=spent)
+        super()._calculate_estimated_budget_usage(budget=budget, logged_time=spent, remaining_time=remaining)
 
     @property
     def time_estimated(self) -> float:
