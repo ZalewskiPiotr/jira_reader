@@ -1,4 +1,3 @@
-# TODO: dodać testy jednostkowe
 # Local imports
 from jira_reader.issue import Issue
 

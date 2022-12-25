@@ -1,4 +1,3 @@
-# TODO: dodać testy jednostkowe
 class Issue:
     """
     Klasa przechowuje podstawowe informacje o issue z Jiry
