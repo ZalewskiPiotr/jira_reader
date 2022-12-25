@@ -111,10 +111,9 @@ class JiraReader:
                 epic_url = f"{self._jira_url}/browse/{epic_key}"
                 page_content = jira_obj.get_page_content_selenium(epic_url)
                 epic = jira_obj.get_information_about_epic(page_content)
-                # TODO: budget_usage i budget_etimated powinny znaleźć się jako atrybuty klasy Epic. Funnkcje, które
-                # wyliczają wartości tych zmiennych powinny być jako metody klasy Epic
-                budget_usage = self.convert_number_to_string_with_percent(
-                    self.calculate_budget_usage(epic.budget, epic.time_spent))
+                # TODO: budget_etimated powinien znaleźć się jako atrybut klasy Epic. Funkcja, która wyliczaja wartość
+                #  tej zmiennej powinna być jako metoda klasy Epic
+                budget_usage = self.convert_number_to_string_with_percent(epic.budget_usage)
                 budget_etimated = self.convert_number_to_string_with_percent(
                     self.get_estimated_budget(epic.budget, epic.time_spent, epic.time_remaining))
                 data_from_jira.append([epic.name, epic.key, epic.budget, epic.time_estimated, epic.time_spent,
@@ -143,25 +142,6 @@ class JiraReader:
                              "Bieżące użycie budżetu", "Szacunkowe wykorzystanie budżetu"]
         table.add_rows(data_to_show)
         print(table)
-
-    @staticmethod
-    def calculate_budget_usage(budget: float, logged_time: float) -> float:
-        """ Wyliczenie użycia budżetu
-
-        Metoda na podstawie podanego budżetu i zalogowanego czasu wylicza procent użycia budżetu
-
-        :param budget: Budżet zadania w dniach
-        :type budget: float
-        :param logged_time: Zalogowany czas w godzinach
-        :type logged_time: float
-        :return: Użycie budżetu podane w wartości procentowej
-        :rtype: float
-        """
-        if budget > 0:
-            budget_usage = ((logged_time / 8) / budget) * 100
-            return round(budget_usage, 2)
-        else:
-            return 0
 
     @staticmethod
     def convert_number_to_string_with_percent(number: float) -> str:
