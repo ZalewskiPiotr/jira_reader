@@ -7,6 +7,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup
 # Local imports
+from jira_reader.epic import Epic
 
 
 class Jira:
@@ -215,7 +216,7 @@ class Jira:
                 budget = float(sibling_tag.text.strip())
         return budget
 
-    def get_information_about_epic(self, content: str) -> tuple[str, str, float, float, float, float]:
+    def get_information_about_epic(self, content: str) -> Epic:
         """ Pobranie informacji o epiku z Jiry
         Funkcja otrzymuje stronę z Jiry z informacjami o jednym epiku. Na podstawie otrzymanej zawartości funkcja
         odszukuje podstawowe informacje o wskazanym epiku.
@@ -224,7 +225,7 @@ class Jira:
         :type content: str
         :return: Odczytane informacje o epiku: nazwa, key, budżet, estimated time, logged time, remaining time.
         Czas podawany jest w godzinach.
-        :rtype: tuple[str, str, float, float, float. float]
+        :rtype: jira_reader.epic.Epic
         """
         soup = BeautifulSoup(content, features='lxml')
 
@@ -240,5 +241,4 @@ class Jira:
         times_list = soup.find_all(class_='tt_values', title=re.compile('Time spent:'))
         spent_time, remaining_time, estimated_time = self.get_times(times_list)
 
-        return epic_name, epic_key, budget_days, estimated_time, spent_time, remaining_time
-
+        return Epic(epic_name, epic_key, estimated_time, remaining_time, spent_time, budget_days)

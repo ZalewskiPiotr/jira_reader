@@ -6,6 +6,7 @@ from prettytable import PrettyTable
 
 # Local imports
 from jira_reader import jira
+from jira_reader.epic import Epic
 
 
 class JiraReader:
@@ -109,11 +110,11 @@ class JiraReader:
             try:
                 epic_url = f"{self._jira_url}/browse/{epic_key}"
                 page_content = jira_obj.get_page_content_selenium(epic_url)
-                name, key, budget, estimated, logged, remaining = jira_obj.get_information_about_epic(page_content)
-                budget_usage = self.convert_number_to_string_with_percent(self.calculate_budget_usage(budget, logged))
-                budget_etimated = self.convert_number_to_string_with_percent(
-                    self.get_estimated_budget(budget, logged, remaining))
-                data_from_jira.append([name, key, budget, estimated, logged, remaining, budget_usage, budget_etimated])
+                epic = jira_obj.get_information_about_epic(page_content)
+                budget_usage = self.convert_number_to_string_with_percent(epic.budget_usage)
+                budget_estimated = self.convert_number_to_string_with_percent(epic.estimated_budget_usage)
+                data_from_jira.append([epic.name, epic.key, epic.budget, epic.time_estimated, epic.time_spent,
+                                       epic.time_remaining, budget_usage, budget_estimated])
             except Exception as error:
                 print(f"---------- Błąd dla epika: {str(epic_key).upper()} ----------")
                 traceback.print_exception(error)
@@ -140,25 +141,6 @@ class JiraReader:
         print(table)
 
     @staticmethod
-    def calculate_budget_usage(budget: float, logged_time: float) -> float:
-        """ Wyliczenie użycia budżetu
-
-        Metoda na podstawie podanego budżetu i zalogowanego czasu wylicza procent użycia budżetu
-
-        :param budget: Budżet zadania w dniach
-        :type budget: float
-        :param logged_time: Zalogowany czas w godzinach
-        :type logged_time: float
-        :return: Użycie budżetu podane w wartości procentowej
-        :rtype: float
-        """
-        if budget > 0:
-            budget_usage = ((logged_time / 8) / budget) * 100
-            return round(budget_usage, 2)
-        else:
-            return 0
-
-    @staticmethod
     def convert_number_to_string_with_percent(number: float) -> str:
         """ Dodanie znaku procentu do liczby
 
@@ -169,24 +151,3 @@ class JiraReader:
         """
         return f"{str(number)} %"
 
-    @staticmethod
-    def get_estimated_budget(budget: float, logged: float, remaining: float) -> float:
-        """ Wyliczenie przewidywanego zużycia budżetu
-
-        Metoda na podstawia zalogowanego czasu i czasu, który pozostał do zakończenia zadania wylicza przewidywane
-        procentowe zużycie budżetu zadania
-
-        :param budget: Budżet zadania w dniach
-        :type budget: float
-        :param logged: Zalogowany czas w godzinach
-        :type logged: float
-        :param remaining: Przewidywany pozostały czas w godzinach
-        :type remaining: float
-        :return: Przewidywane zużycie budżetu w procentach
-        :rtype: float
-        """
-        if budget > 0:
-            estimated_budget = (((logged + remaining) / 8) / budget) * 100
-            return round(estimated_budget, 2)
-        else:
-            return 0
