@@ -1,5 +1,5 @@
 # Local imports
-from jira_reader.issue import Issue
+from jira_reader.entities.issue import Issue
 
 
 class Epic(Issue):

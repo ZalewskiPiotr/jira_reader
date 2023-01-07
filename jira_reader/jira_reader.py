@@ -6,7 +6,7 @@ from prettytable import PrettyTable
 
 # Local imports
 from jira_reader import jira
-from jira_reader.epic import Epic
+from jira_reader.entities.epic import Epic
 
 
 class JiraReader:

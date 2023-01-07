@@ -15,7 +15,7 @@ Wyjątki (exceptions):
 - brak
 """
 # Local imports
-from jira_reader.epic import Epic
+from jira_reader.entities.epic import Epic
 
 
 def test_init_put_all_correct_attributes():

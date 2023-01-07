@@ -15,7 +15,7 @@ Wyjątki (exceptions):
 - brak
 """
 # Local imports
-from jira_reader.task import Task
+from jira_reader.entities.task import Task
 
 
 def test_init_put_all_correct_attributes():

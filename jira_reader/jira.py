@@ -7,7 +7,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup
 # Local imports
-from jira_reader.epic import Epic
+from jira_reader.entities.epic import Epic
 
 
 class Jira:
