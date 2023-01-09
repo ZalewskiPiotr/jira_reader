@@ -34,6 +34,8 @@ import chromedriver_autoinstaller
 # Local imports
 import jira_reader
 from jira_reader import jira_reader as jr
+from jira_reader.controllers.main_controller import MainController
+from jira_reader.views.main_view import MainView
 
 
 def show_program_metadata():
@@ -145,5 +147,14 @@ def main():
     reader_jira.show_main_epic_data(epic_list)
 
 
+def main_2():
+    main_view = MainView()
+    controller = MainController()
+    main_view.set_controller(controller)
+    main_view.run()
+
+
 if __name__ == '__main__':
+    main_2()
+    exit(0)
     main()
