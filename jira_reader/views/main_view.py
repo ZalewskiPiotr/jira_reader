@@ -31,6 +31,8 @@ class MainView:
         Metoda uruchamia główną pętlę programu
     - _close(self):
         Metoda kończy działanie programu
+    - _show_epics_report(self):
+        Metoda wyświetla raport o epikach
     """
     def __init__(self):
         """ Inicjalizacja klasy
@@ -85,7 +87,8 @@ class MainView:
         self._btn_exit.pack(side='right', padx=5)
 
         # Przycisk 'Pokaż raport o epikach'
-        self._btn_show_epics_report = tk.Button(master=frame_buttons, text='Pokaż raport o epikach')
+        self._btn_show_epics_report = tk.Button(master=frame_buttons, text='Pokaż raport o epikach',
+                                                command=self._show_epics_report)
         self._btn_show_epics_report.pack(side='right')
 
     def _create_status_bar(self):
@@ -128,3 +131,9 @@ class MainView:
         """ Metoda kończy działanie programu
         """
         self._root.quit()
+
+    def _show_epics_report(self):
+        """ Metoda wyświetla raport o epikach
+        """
+        data = self._controller.show_epics_report()
+        self._txt_report.insert(tk.END, data)
