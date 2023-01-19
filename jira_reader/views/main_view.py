@@ -29,6 +29,8 @@ class MainView:
         Metoda ustawia kontroler dla tego okna programu
     - run(self):
         Metoda uruchamia główną pętlę programu
+    - _close(self):
+        Metoda kończy działanie programu
     """
     def __init__(self):
         """ Inicjalizacja klasy
@@ -79,7 +81,7 @@ class MainView:
         frame_buttons.grid(row=1, column=0, columnspan=2, sticky='we', pady=(5, 0))
 
         # Przycisk 'Zakończ'
-        self._btn_exit = tk.Button(master=frame_buttons, text='Zakończ')
+        self._btn_exit = tk.Button(master=frame_buttons, text='Zakończ', command=self._close)
         self._btn_exit.pack(side='right', padx=5)
 
         # Przycisk 'Pokaż raport o epikach'
@@ -121,3 +123,8 @@ class MainView:
         """ Metoda uruchamia główną pętlę programu
         """
         self._root.mainloop()
+
+    def _close(self):
+        """ Metoda kończy działanie programu
+        """
+        self._root.quit()
