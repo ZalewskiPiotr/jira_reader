@@ -33,6 +33,8 @@ class MainView:
         Metoda kończy działanie programu
     - _show_epics_report(self):
         Metoda wyświetla raport o epikach
+    - _load_program_metadata(self):
+        Metoda ładuje metadane programu: autor, wersja, wiki, nazwa programu
     """
     def __init__(self):
         """ Inicjalizacja klasy
@@ -129,18 +131,18 @@ class MainView:
         self._root.mainloop()
 
     def _load_program_metadata(self):
+        """ Metoda ładuje metadane programu: autor, wersja, wiki, nazwa programu
+        """
         metadata = self._controller.load_program_metadata()
         self._root.title(metadata[0])
         self._lbl_status_version.config(text=metadata[1])
         self._lbl_status_author.config(text=metadata[2])
         self._lbl_status_info.config(text=f"Wiki programu: {metadata[3]}")
 
-
     def _close(self):
         """ Metoda kończy działanie programu
         """
         self._root.quit()
-
 
     def _show_epics_report(self):
         """ Metoda wyświetla raport o epikach
