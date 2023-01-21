@@ -46,8 +46,8 @@ class MainView:
         """ Metoda tworzy widżety w głównym oknie programu
         """
         self._root = tk.Tk()
-        self._root.title('Jira Reader')
-        self._root.minsize(800, 600)
+        self._root.title('Title will be read from metadata file')
+        self._root.minsize(1200, 600)
 
         self._grid_configure()
         self._create_report_area()
@@ -125,12 +125,22 @@ class MainView:
     def run(self):
         """ Metoda uruchamia główną pętlę programu
         """
+        self._load_program_metadata()
         self._root.mainloop()
+
+    def _load_program_metadata(self):
+        metadata = self._controller.load_program_metadata()
+        self._root.title(metadata[0])
+        self._lbl_status_version.config(text=metadata[1])
+        self._lbl_status_author.config(text=metadata[2])
+        self._lbl_status_info.config(text=f"Wiki programu: {metadata[3]}")
+
 
     def _close(self):
         """ Metoda kończy działanie programu
         """
         self._root.quit()
+
 
     def _show_epics_report(self):
         """ Metoda wyświetla raport o epikach

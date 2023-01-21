@@ -1,7 +1,17 @@
 # TODO: dodać dokumentację klasy
 from prettytable import PrettyTable
+import jira_reader
+
 
 class MainController:
+
+    @staticmethod
+    def load_program_metadata() -> []:
+        name = jira_reader.__program_name__
+        version = jira_reader.__version__
+        author = jira_reader.__author__
+        wiki = jira_reader.__wiki__
+        return [name, version, author, wiki]
 
     def show_epics_report(self):
         table = PrettyTable()
