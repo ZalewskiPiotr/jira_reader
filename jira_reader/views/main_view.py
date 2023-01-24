@@ -1,5 +1,6 @@
 # Standard import library
 import tkinter as tk
+import traceback
 # Local imports
 from jira_reader.controllers.main_controller import MainController
 
@@ -125,10 +126,14 @@ class MainView:
         self._controller = controller
 
     def run(self):
-        """ Metoda uruchamia główną pętlę programu
+        """ Załadowanie danych początkowych
+
+        Metoda ładuje dane początkowe programu, inicjalizuje wszelkie zmienne oraz wykonuje operacje startowe. Następnie
+        uruchamiana jest pętla główna programu.
         """
-        self._load_program_metadata()
-        self._root.mainloop()
+        self._load_program_metadata()   # Wyświetlenie informacji o autorze,, nazwie, wersji, wiki
+        self._setup()                   # Instalacja sterownika, załadowanie pliku konfiguracyjnego
+        self._root.mainloop()           # Start pętli głównej
 
     def _load_program_metadata(self):
         """ Metoda ładuje metadane programu: autor, wersja, wiki, nazwa programu
@@ -138,6 +143,15 @@ class MainView:
         self._lbl_status_version.config(text=metadata[1])
         self._lbl_status_author.config(text=metadata[2])
         self._lbl_status_info.config(text=f"Wiki programu: {metadata[3]}")
+
+    def _setup(self):
+        try:
+            # TODO: dodać dokumentację i funkcję setup w kontrolerze
+            self._controller.setup()
+        except Exception as error:
+            # TODO: obsługa błędu zrobiona w poniższy sposób wyświetla informacje na konsoli i być może da się to
+            #  zapisać do pliku logu. Natomiast należy znaleźć sposób aby coś wyświetlić userowi w oknie programu
+            traceback.print_exception(error)
 
     def _close(self):
         """ Metoda kończy działanie programu
