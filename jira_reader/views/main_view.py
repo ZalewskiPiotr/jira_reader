@@ -1,5 +1,6 @@
 # Standard import library
 import tkinter as tk
+from tkinter import messagebox
 import traceback
 # Local imports
 from jira_reader.controllers.main_controller import MainController
@@ -145,13 +146,16 @@ class MainView:
         self._lbl_status_info.config(text=f"Wiki programu: {metadata[3]}")
 
     def _setup(self):
+        # TODO: dodać dokumentację
         try:
-            # TODO: dodać dokumentację i funkcję setup w kontrolerze
             self._controller.setup()
         except Exception as error:
-            # TODO: obsługa błędu zrobiona w poniższy sposób wyświetla informacje na konsoli i być może da się to
-            #  zapisać do pliku logu. Natomiast należy znaleźć sposób aby coś wyświetlić userowi w oknie programu
-            traceback.print_exception(error)
+            msg = str(error)
+            msg_1 = traceback.format_exc()
+            messagebox.showerror(title="Błąd", message=msg, detail=msg_1)
+            # TODO: zrobić zapis błędu do pliku logu i usunąć wyświetlanie msg_1 w oknie użytkownikowi
+            # log = logging.getLogger()
+            # log.exception(error)
 
     def _close(self):
         """ Metoda kończy działanie programu
