@@ -149,7 +149,7 @@ def main():
 
 def main_2():
     main_view = MainView()
-    controller = MainController()
+    controller = MainController(get_root_folder())
     main_view.set_controller(controller)
     main_view.run()
 

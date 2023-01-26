@@ -165,5 +165,13 @@ class MainView:
     def _show_epics_report(self):
         """ Metoda wyświetla raport o epikach
         """
-        data = self._controller.show_epics_report()
-        self._txt_report.insert(tk.END, data)
+        try:
+            data = self._controller.show_epics_report()
+            self._txt_report.insert(tk.END, data)
+        except Exception as error:
+            msg = str(error)
+            msg_1 = traceback.format_exc()
+            messagebox.showerror(title="Błąd", message=msg, detail=msg_1)
+            # TODO: zrobić zapis błędu do pliku logu i usunąć wyświetlanie msg_1 w oknie użytkownikowi
+            # log = logging.getLogger()
+            # log.exception(error)
