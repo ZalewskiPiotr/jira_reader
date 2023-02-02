@@ -42,10 +42,10 @@ class Epic(Issue):
         :type budget: float
         """
         super().__init__(name, key)
-        self._time_estimated: float = estimated
-        self._time_remaining: float = remaining
-        self._time_spent: float = spent
-        self._budget: float = budget
+        self.time_estimated = estimated
+        self.time_remaining = remaining
+        self.time_spent = spent
+        self.budget = budget
         super()._calculate_budget_usage(budget=budget, logged_time=spent)
         super()._calculate_estimated_budget_usage(budget=budget, logged_time=spent, remaining_time=remaining)
 
@@ -59,6 +59,10 @@ class Epic(Issue):
         """
         return self._time_estimated
 
+    @time_estimated.setter
+    def time_estimated(self, value: float):
+        self._time_estimated = value
+
     @property
     def time_remaining(self) -> float:
         """
@@ -68,6 +72,10 @@ class Epic(Issue):
         :rtype: float
         """
         return self._time_remaining
+
+    @time_remaining.setter
+    def time_remaining(self, value: float):
+        self._time_remaining = value
 
     @property
     def time_spent(self) -> float:
@@ -79,6 +87,10 @@ class Epic(Issue):
         """
         return self._time_spent
 
+    @time_spent.setter
+    def time_spent(self, value: float):
+        self._time_spent = value
+
     @property
     def budget(self) -> float:
         """
@@ -88,3 +100,7 @@ class Epic(Issue):
         :rtype: float
         """
         return self._budget
+
+    @budget.setter
+    def budget(self, value: float):
+        self._budget = value

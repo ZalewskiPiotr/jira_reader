@@ -32,10 +32,10 @@ class Issue:
         :param key: Identyfikator issue
         :type key: str
         """
-        self._name: str = name
-        self._key: str = key
-        self._budget_usage: float = 0
-        self._estimated_budget_usage: float = 0
+        self.name = name
+        self.key = key
+        self.budget_usage = 0
+        self.estimated_budget_usage = 0
 
     @property
     def name(self) -> str:
@@ -47,6 +47,10 @@ class Issue:
         """
         return self._name
 
+    @name.setter
+    def name(self, value: str):
+        self._name = value
+
     @property
     def key(self) -> str:
         """
@@ -56,6 +60,10 @@ class Issue:
         :rtype: str
         """
         return self._key
+
+    @key.setter
+    def key(self, value: str):
+        self._key = value
 
     @property
     def budget_usage(self) -> float:
@@ -67,6 +75,10 @@ class Issue:
         """
         return self._budget_usage
 
+    @budget_usage.setter
+    def budget_usage(self, value: float):
+        self._budget_usage = value
+
     @property
     def estimated_budget_usage(self) -> float:
         """
@@ -76,6 +88,10 @@ class Issue:
         :rtype: float
         """
         return self._estimated_budget_usage
+
+    @estimated_budget_usage.setter
+    def estimated_budget_usage(self, value: float):
+        self._estimated_budget_usage = value
 
     def _calculate_budget_usage(self, budget: float, logged_time: float):
         """ Wyliczenie użycia budżetu

@@ -42,10 +42,10 @@ class Task(Issue):
         :type status: str
         """
         super().__init__(name, key)
-        self._sum_estimated: float = sum_estimated
-        self._sum_remaining: float = sum_remaining
-        self._sum_spent: float = sum_spent
-        self._status: str = status
+        self.sum_estimated = sum_estimated
+        self.sum_remaining = sum_remaining
+        self.sum_spent = sum_spent
+        self.status = status
 
     @property
     def sum_estimated(self) -> float:
@@ -57,6 +57,10 @@ class Task(Issue):
         """
         return self._sum_estimated
 
+    @sum_estimated.setter
+    def sum_estimated(self, value: float):
+        self._sum_estimated = value
+
     @property
     def sum_remaining(self) -> float:
         """
@@ -66,6 +70,10 @@ class Task(Issue):
         :rtype: float
         """
         return self._sum_remaining
+
+    @sum_remaining.setter
+    def sum_remaining(self, value: float):
+        self._sum_remaining = value
 
     @property
     def sum_spent(self) -> float:
@@ -77,6 +85,10 @@ class Task(Issue):
         """
         return self._sum_spent
 
+    @sum_spent.setter
+    def sum_spent(self, value: float):
+        self._sum_spent = value
+
     @property
     def status(self) -> str:
         """
@@ -86,3 +98,7 @@ class Task(Issue):
         :rtype: str
         """
         return self._status
+
+    @status.setter
+    def status(self, value: str):
+        self._status = value
